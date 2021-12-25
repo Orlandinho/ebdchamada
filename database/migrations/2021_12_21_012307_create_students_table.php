@@ -15,8 +15,9 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('classroom_id');
+            $table->foreignId('classroom_id')->constrained();
             $table->string('name');
+            $table->date('dob');
             $table->boolean('active');
             $table->boolean('visitor')->default(false);
             $table->string('avatar')->default('/avatars/default.png')->nullable();

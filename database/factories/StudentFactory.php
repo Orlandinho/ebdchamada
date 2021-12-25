@@ -14,7 +14,12 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'classroom_id' => $this->faker->numberBetween(1, 5),
+            'name' => $this->faker->firstName(),
+            'dob' => $this->faker->dateTimeBetween('-50 years', '-5 years'),
+            'active' => true,
+            'visitor' => false,
+            'avatar' => '/avatars/default.png'
         ];
     }
 }

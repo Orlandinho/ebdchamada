@@ -14,7 +14,8 @@ class ClassroomFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'class' => $this->faker->word(),
+            'description' => $this->faker->sentence()
         ];
     }
 }

@@ -17,7 +17,6 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->boolean('attended');
-            $table->date('date');
             $table->timestamps();
         });
     }
