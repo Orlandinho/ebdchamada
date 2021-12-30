@@ -5450,6 +5450,45 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
+document.addEventListener('alpine:init', function () {
+  // Stores variable globally
+  alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].store('sidebar', {
+    full: false,
+    active: 'home',
+    navOpen: false
+  }); // Creating component Dropdown
+
+  alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('dropdown', function () {
+    return {
+      open: false,
+      toggle: function toggle(tab) {
+        this.open = !this.open;
+        alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].store('sidebar').active = tab;
+      },
+      activeClass: 'bg-gray-800 text-gray-200',
+      expandedClass: 'border-l border-gray-400 ml-4 pl-4',
+      shrinkedClass: 'sm:absolute top-0 left-20 sm:shadow-md sm:z-10 sm:bg-gray-900 sm:rounded-md sm:p-4 border-l sm:border-none border-gray-400 ml-4 pl-4 sm:ml-0 w-28'
+    };
+  }); // Creating component Sub Dropdown
+
+  alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('sub_dropdown', function () {
+    return {
+      sub_open: false,
+      sub_toggle: function sub_toggle() {
+        this.sub_open = !this.sub_open;
+      },
+      sub_expandedClass: 'border-l border-gray-400 ml-4 pl-4',
+      sub_shrinkedClass: 'sm:absolute top-0 left-28 sm:shadow-md sm:z-10 sm:bg-gray-900 sm:rounded-md sm:p-4 border-l sm:border-none border-gray-400 ml-4 pl-4 sm:ml-0 w-28'
+    };
+  }); // Creating tooltip
+
+  alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('tooltip', function () {
+    return {
+      show: false,
+      visibleClass: 'block sm:absolute -top-7 sm:border border-gray-800 left-5 sm:text-sm sm:bg-gray-900 sm:px-2 sm:py-1 sm:rounded-md'
+    };
+  });
+});
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 
 /***/ }),

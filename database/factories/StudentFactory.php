@@ -16,6 +16,7 @@ class StudentFactory extends Factory
         return [
             'classroom_id' => $this->faker->numberBetween(1, 5),
             'name' => $this->faker->firstName(),
+            'slug' => $this->faker->slug(),
             'dob' => $this->faker->dateTimeBetween('-50 years', '-5 years'),
             'active' => true,
             'visitor' => false,

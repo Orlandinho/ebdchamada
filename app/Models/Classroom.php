@@ -11,8 +11,11 @@ class Classroom extends Model
 
     protected $fillable = [
         'class',
+        'slug',
         'description'
     ];
+
+    protected $with = ['students'];
 
     public function students()
     {

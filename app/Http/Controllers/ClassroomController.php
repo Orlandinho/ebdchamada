@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ClassroomController extends Controller
 {
@@ -13,7 +15,7 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('starter');
     }
 
     /**
@@ -43,9 +45,12 @@ class ClassroomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Classroom $classroom)
     {
-        //
+        return view('index', [
+            'students' => $classroom->students,
+            'classroom' => $classroom
+        ]);
     }
 
     /**

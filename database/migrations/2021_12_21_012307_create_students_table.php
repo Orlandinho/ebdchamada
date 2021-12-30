@@ -17,6 +17,7 @@ class CreateStudentsTable extends Migration
             $table->id();
             $table->foreignId('classroom_id')->constrained();
             $table->string('name');
+            $table->string('slug');
             $table->date('dob');
             $table->boolean('active');
             $table->boolean('visitor')->default(false);
