@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminClassController;
 use App\Http\Controllers\ClassroomController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ClassroomController::class, 'index']);
+Route::get('/admin/classrooms', [AdminClassController::class, 'index']);
 
 Route::get('classes/{classroom:class}', [ClassroomController::class, 'show']);
 
