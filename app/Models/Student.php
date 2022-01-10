@@ -34,4 +34,9 @@ class Student extends Model
     {
         return now()->diffInYears($this->dob);
     }
+
+    public function information()
+    {
+        return $this->hasOne(Information::class);
+    }
 }

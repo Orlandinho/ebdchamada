@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
 use Illuminate\Http\Request;
 
 class AdminClassController extends Controller
@@ -13,7 +14,9 @@ class AdminClassController extends Controller
      */
     public function index()
     {
-        return view('starter');
+        return view('admin.classroom_index', [
+            'data' => Classroom::all()
+        ]);
     }
 
     /**

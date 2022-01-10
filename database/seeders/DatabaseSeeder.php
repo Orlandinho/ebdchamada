@@ -31,17 +31,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Student::factory(10)->create([
-            'classroom_id' => 1
+            'classroom_id' => 2
         ]);
 
         Role::factory()->create([
-            'role' => 'professor'
+            'name' => 'professor'
         ]);
         Role::factory()->create([
-            'role' => 'assistent'
+            'name' => 'assistent'
         ]);
         Role::factory()->create([
-            'role' => 'admin'
+            'name' => 'admin'
         ]);
 
         User::factory()->create([
