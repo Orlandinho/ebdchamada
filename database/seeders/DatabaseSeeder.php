@@ -64,5 +64,33 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
+        User::factory()->create([
+            'classroom_id' => 2,
+            'role_id' => 1,
+            'name' => 'Luciana',
+            'email' => 'luciana@example.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+        ]);
+
+        Student::factory()->create([
+            'classroom_id' => 1,
+            'name' => 'Orlando',
+            'slug' => 'orlando',
+        ]);
+
+        Student::factory()->create([
+            'classroom_id' => 1,
+            'name' => 'Silvio',
+            'slug' => 'silvio',
+        ]);
+
+        Student::factory()->create([
+            'classroom_id' => 1,
+            'name' => 'Luciana',
+            'slug' => 'luciana',
+        ]);
+
     }
 }

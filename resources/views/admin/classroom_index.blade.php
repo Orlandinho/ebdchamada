@@ -4,6 +4,8 @@
     <x-admin.sidebar :data="$data" />
 
     <x-admin.content>
-        <x-admin.classroom-card />
+        @foreach($data as $classroom)
+            <x-admin.classroom-card :classroom="$classroom" />
+        @endforeach
     </x-admin.content>
 </x-admin.layout>

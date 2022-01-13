@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/admin/classrooms', [AdminClassController::class, 'index']);
+Route::get('/admin/classrooms/create', [AdminClassController::class, 'create']);
 
 Route::get('classes/{classroom:class}', [ClassroomController::class, 'show']);
 

@@ -26,7 +26,9 @@ class AdminClassController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.classroom_create', [
+            'data' => Classroom::all()
+        ]);
     }
 
     /**
