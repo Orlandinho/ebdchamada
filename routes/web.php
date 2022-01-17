@@ -15,8 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin/classrooms', [AdminClassController::class, 'index']);
-Route::get('/admin/classrooms/create', [AdminClassController::class, 'create']);
+Route::prefix('admin')
+    ->name('admin.classrooms.')
+    ->group(function() {
+    Route::get('/classrooms', [AdminClassController::class, 'index'])->name('index');
+    Route::get('/classrooms/create', [AdminClassController::class, 'create'])->name('create');
+    Route::post('/classrooms', [AdminClassController::class, 'store'])->name('store');
+    Route::get('/classrooms/{classroom}/edit', [AdminClassController::class, 'edit'])->name('edit');
+    Route::get('/classrooms/{classroom}', [AdminClassController::class, 'update'])->name('update');
+});
 
 Route::get('classes/{classroom:class}', [ClassroomController::class, 'show']);
 

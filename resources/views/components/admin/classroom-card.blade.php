@@ -5,7 +5,7 @@
             <h5 class="m-0"><a href="/#">{{ $classroom->class }}</a></h5>
         </div>
         <div class="float-right">
-            <a href="#" class="d-inline mr-3">
+            <a href="/admin/classrooms/{{ $classroom->id }}/edit" class="d-inline mr-3">
                 <i class="text-gray-dark fas fa-edit"></i>
             </a>
             <a href="#" class="d-inline">
@@ -21,14 +21,12 @@
                 @else
                     Professor:
                 @endif
-                <a href="/#">{{ $classroom->teachers[0]['name'] }}</a></h6>
+                <a href="/admin/users/{{ $classroom->teachers[0]['id'] }}">{{ $classroom->teachers[0]['name'] }}</a></h6>
         @else
             <h6 class="card-title mb-3">Professores:
                 @foreach($classroom->teachers as $teacher)
-                    <a href="/admin/{{ $teacher->id }}">{{ $teacher->name }} </a>
-                    @if($loop->last)
-                        .
-                    @else
+                    <a href="/admin/users/{{ $teacher->id }}">{{ $teacher->name }} </a>
+                    @if(! $loop->last)
                         e
                     @endif
                 @endforeach

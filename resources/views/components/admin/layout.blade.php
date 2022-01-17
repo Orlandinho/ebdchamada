@@ -10,6 +10,8 @@
               href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+        <!-- Select plugin element style -->
+        <link rel="stylesheet" href="{{  asset('plugins/select2/css/select2.min.css') }}">
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     </head>
@@ -37,5 +39,14 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+    <!-- select2 plugin -->
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+    </script>
     </body>
 </html>

@@ -74,6 +74,26 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
+        User::factory()->create([
+            'classroom_id' => null,
+            'role_id' => 1,
+            'name' => 'Aline',
+            'email' => 'aline@example.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+        ]);
+
+        User::factory()->create([
+            'classroom_id' => null,
+            'role_id' => 1,
+            'name' => 'Irene',
+            'email' => 'irene@example.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+        ]);
+
         Student::factory()->create([
             'classroom_id' => 1,
             'name' => 'Orlando',
@@ -90,6 +110,18 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => 1,
             'name' => 'Luciana',
             'slug' => 'luciana',
+        ]);
+
+        Student::factory()->create([
+            'classroom_id' => 1,
+            'name' => 'Irene',
+            'slug' => 'irene',
+        ]);
+
+        Student::factory()->create([
+            'classroom_id' => 1,
+            'name' => 'Aline',
+            'slug' => 'aline',
         ]);
 
     }
