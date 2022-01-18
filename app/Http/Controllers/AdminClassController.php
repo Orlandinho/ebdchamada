@@ -98,9 +98,30 @@ class AdminClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Classroom $classroom)
     {
-        //
+        if($request->has('class')){
+            $classroom->slug = Str::slug($request->class, '-');
+        }
+        
+        $updated = $classroom->update([
+            'class' => $request->class ?? $classroom->class,
+            'description' => $request->description ?? $classroom->description,
+            'slug' => $classroom->slug
+        ]);
+
+        if(!empty($request->name) && $updated){
+            User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
+            foreach($request->name as $key=>$id){
+                $user = User::find($id);
+                $user->classroom_id = $classroom->id;
+                $user->save();
+            }
+        } else {
+            User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
+        }
+
+        return redirect()->route('admin.classrooms.index')->with('Success', 'Informações da classe atualizadas!');
     }
 
     /**

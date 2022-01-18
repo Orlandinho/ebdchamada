@@ -5,7 +5,7 @@
             <h5 class="m-0"><a href="/#">{{ $classroom->class }}</a></h5>
         </div>
         <div class="float-right">
-            <a href="/admin/classrooms/{{ $classroom->id }}/edit" class="d-inline mr-3">
+            <a href="/admin/classrooms/{{ $classroom->slug }}/edit" class="d-inline mr-3">
                 <i class="text-gray-dark fas fa-edit"></i>
             </a>
             <a href="#" class="d-inline">

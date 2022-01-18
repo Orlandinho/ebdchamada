@@ -3,7 +3,7 @@
 
     <x-admin.sidebar :data="$data" />
 
-    <x-admin.form method="PATCH" route="/admin/classrooms/{$classroom}" button="Atualizar" name="{{ $classroom->class }}" header="Editando a classe {{ $classroom->class }}">
+    <x-admin.form method="PATCH" route="/admin/classrooms/{{ $classroom->slug }}" button="Atualizar" name="{{ $classroom->class }}" header="Editando a classe {{ $classroom->class }}">
         <x-form.input name="class" nome="classe" :value="old('class', $classroom->class)" autofocus />
         <x-form.input name="description" nome="descrição" :value="old('slug', $classroom->description)" />
         <div class="form-group">
