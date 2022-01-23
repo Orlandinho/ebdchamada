@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\User;
+use Alert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AdminClassController extends Controller
 {
@@ -30,7 +33,6 @@ class AdminClassController extends Controller
     {
         $teachers = User::whereNull('classroom_id')->get();
         return view('admin.classroom_create', [
-            'data' => Classroom::all(),
             'teachers' => $teachers
         ]);
     }
@@ -43,25 +45,25 @@ class AdminClassController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'class' => 'required|unique:classrooms,class',
-            'description' => 'required'
-        ]);
+        $attributes = $this->validateClass($request);
+        try {
+            DB::transaction(function() use ($request, $attributes) {
+                $currentClass = Classroom::create($attributes);
 
-        $attributes['slug'] = Str::slug($request->class, '-');
-
-        $currentClass = Classroom::create($attributes);
-
-        if($request->name){
-            foreach($request->name as $key=>$id){
-                $user = User::find($id);
-                $user->classroom_id = $currentClass->id;
-                $user->save();
-            }
+                if($request->name){
+                    foreach($request->name as $key=>$id){
+                        $user = User::find($id);
+                        $user->classroom_id = $currentClass->id;
+                        $user->save();
+                    }
+                }
+            });
+            toast("Classe {$request->class} criada!",'success')->hideCloseButton();
+            return redirect()->route('admin.classrooms.index');
+        } catch (\Exception $e) {
+            toast("Erro ao tentar criar a classe! ". $e->getMessage(),'error')->hideCloseButton();
+            return redirect()->back();
         }
-
-        return redirect()->route('admin.classrooms.index')->with('Success', 'Classe criada!');
-
     }
 
     /**
@@ -70,9 +72,11 @@ class AdminClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Classroom $classroom)
     {
-        //
+        return view('admin.classroom_show',[
+            'classroom' => $classroom
+        ]);
     }
 
     /**
@@ -85,7 +89,6 @@ class AdminClassController extends Controller
     {
         $teachers = User::where('classroom_id', $classroom->id)->orWhereNull('classroom_id')->get();
         return view('admin.classroom_edit', [
-            'data' => Classroom::all(),
             'classroom' => $classroom,
             'teachers' => $teachers
         ]);
@@ -100,28 +103,25 @@ class AdminClassController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
-        if($request->has('class')){
-            $classroom->slug = Str::slug($request->class, '-');
+        $attributes = $this->validateClass($request);
+        try {
+            DB::transaction(function() use ($request, $attributes, $classroom) {
+                $classroom->update($attributes);
+                User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
+                if(!empty($request->name)){
+                    foreach($request->name as $key=>$id){
+                        $user = User::find($id);
+                        $user->classroom_id = $classroom->id;
+                        $user->save();
+                    }
+                }
+            });
+            toast("Classe {$request->class} atualizada!",'success')->hideCloseButton();
+            return redirect()->route('admin.classrooms.index');
+        } catch (\Exception $e) {
+            toast("Erro ao tentar atualizar a classe! ". $e->getMessage() ,'error')->hideCloseButton();
+            return redirect()->back();
         }
-        
-        $updated = $classroom->update([
-            'class' => $request->class ?? $classroom->class,
-            'description' => $request->description ?? $classroom->description,
-            'slug' => $classroom->slug
-        ]);
-
-        if(!empty($request->name) && $updated){
-            User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
-            foreach($request->name as $key=>$id){
-                $user = User::find($id);
-                $user->classroom_id = $classroom->id;
-                $user->save();
-            }
-        } else {
-            User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
-        }
-
-        return redirect()->route('admin.classrooms.index')->with('Success', 'Informações da classe atualizadas!');
     }
 
     /**
@@ -130,8 +130,25 @@ class AdminClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Classroom $classroom)
     {
-        //
+        $name = $classroom->class;
+        //$classroom->delete();
+        toast("Classe {$name} excluída da base de dados!",'success')->hideCloseButton();
+        return redirect()->back();
     }
+
+    private function validateClass(Request $request)
+    {
+        $attributes = $request->validate([
+            'class' => 'required', Rule::unique('classrooms','slug')->ignore($request->id),
+            'description' => 'required'
+        ]);
+
+        $attributes['slug'] = Str::slug($request->class, '-');
+
+        return $attributes;
+    }
+
+
 }

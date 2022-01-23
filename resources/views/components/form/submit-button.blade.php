@@ -1,3 +1,2 @@
-<div class="card-footer">
-    <button type="submit" class="btn btn-primary">{{ $slot }}</button>
-</div>
+<button type="submit" class="btn btn-primary">{{ $slot }}</button>
+

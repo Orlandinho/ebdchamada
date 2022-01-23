@@ -1,16 +1,24 @@
 @props(['classroom','teachers'])
 <div class="card card-primary card-outline mr-2 col-lg-3">
     <div class="card-header">
-        <div class="d-inline-block">
-            <h5 class="m-0"><a href="/#">{{ $classroom->class }}</a></h5>
-        </div>
-        <div class="float-right">
-            <a href="/admin/classrooms/{{ $classroom->slug }}/edit" class="d-inline mr-3">
-                <i class="text-gray-dark fas fa-edit"></i>
-            </a>
-            <a href="#" class="d-inline">
-                <i class="text-danger fas fa-trash-alt"></i>
-            </a>
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="m-0">
+                    <a href="/admin/classrooms/{{ $classroom->slug }}">{{ $classroom->class }}</a>
+                </h5>
+            </div>
+            <div class="d-flex align-items-center">
+                <a href="/admin/classrooms/{{ $classroom->slug }}/edit" class="mr-2">
+                    <i class="text-gray-dark fas fa-edit"></i>
+                </a>
+                <form action="/admin/classrooms/{{ $classroom->slug }}" class="deleteclass" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-link classname" data-name="{{ $classroom->class }}">
+                        <i class="text-danger fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -37,11 +45,11 @@
         <p>Total de
             @if($classroom->id === 1)
                 oficiais:
-                <a href="/#" class="card-link">{{ $classroom->students->count() }} Oficiais</a></p>
+                <a href="/#" class="card-link">{{ $classroom->students->count() }} Oficiais</a>
             @else
                 alunos:
-                <a href="/#" class="card-link">{{ $classroom->students->count() }} Alunos</a></p>
+                <a href="/#" class="card-link">{{ $classroom->students->count() }} Alunos</a>
             @endif
-
+        </p>
     </div>
 </div>

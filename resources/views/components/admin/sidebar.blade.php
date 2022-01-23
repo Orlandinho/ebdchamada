@@ -1,4 +1,3 @@
-@props(['data'])
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -26,7 +25,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link {{ request()->is('admin/classrooms*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-school"></i>
                         <p>
                             Classes
@@ -34,11 +33,11 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @foreach($data as $classrooms) {{-- needs to set active class in the 'li' when the link is active --}}
+                        @foreach($data as $classroom)
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="/admin/classrooms/{{ $classroom->slug }}" class="nav-link {{ request()->is("admin/classrooms/$classroom->slug") ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>{{ $classrooms->class }}</p>
+                                    <p>{{ $classroom->class }}</p>
                                 </a>
                             </li>
                         @endforeach

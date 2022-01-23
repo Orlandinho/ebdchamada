@@ -47,7 +47,7 @@
 {{--        </header>--}}
 
         <x-project.nav-bar />
-        <main class="mb-auto">
+        <main class="mb-8 flex-1">
             <div>
                 <h2 class="text-center font-bold text-lg">Lista de alunos da sala {{ $classroom->class }}</h2>
             </div>
@@ -119,15 +119,14 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </main>
 
-        <footer class="mt-6">
-            <div class="bg-gray-300 flex">
+        <footer>
+            <div class="bg-gray-700 flex">
                 <div class="py-6 flex items-center max-w-6xl mx-auto">
                     <div>
-                        <span class="text-sm text-gray-700">Desenvolvido por <a href="https://twitter.com/_orlandokun" target="_blank">Orlando</a></span>
+                        <span class="text-sm text-gray-200">Desenvolvido por <a href="https://twitter.com/_orlandokun" target="_blank">Orlando</a></span>
                     </div>
                 </div>
             </div>

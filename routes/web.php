@@ -10,11 +10,17 @@ Route::prefix('admin')
     Route::get('/classrooms', [AdminClassController::class, 'index'])->name('index');
     Route::get('/classrooms/create', [AdminClassController::class, 'create'])->name('create');
     Route::post('/classrooms', [AdminClassController::class, 'store'])->name('store');
+    Route::get('/classrooms/{classroom:slug}', [AdminClassController::class, 'show'])->name('{classroom:slug}');
     Route::get('/classrooms/{classroom:slug}/edit', [AdminClassController::class, 'edit'])->name('edit');
     Route::patch('/classrooms/{classroom:slug}', [AdminClassController::class, 'update'])->name('update');
+    Route::delete('/classrooms/{classroom:slug}', [AdminClassController::class, 'destroy'])->name('delete');
 });
 
-Route::get('classes/{classroom:class}', [ClassroomController::class, 'show']);
+Route::get('classes/{classroom:slug}', [ClassroomController::class, 'show']);
+
+Route::get('/', function(){
+    return view('welcome');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
