@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->faker = Faker::create();
+
         Classroom::factory()->create([
             'class' => 'Oficiais',
             'slug' => 'oficias',
@@ -30,8 +33,19 @@ class DatabaseSeeder extends Seeder
             'description' => 'Alunos entre 18 e 35 anos'
         ]);
 
+        Classroom::factory()->create([
+            'class' => 'Adolescentes',
+            'slug' => 'adolescentes',
+            'description' => 'Alunos entre 12 e 18 anos'
+        ]);
+
         Student::factory(10)->create([
             'classroom_id' => 2
+        ]);
+
+        Student::factory(8)->create([
+            'classroom_id' => 3,
+            'dob' => $this->faker->dateTimeBetween('-18 years', '-12 years')
         ]);
 
         Role::factory()->create([

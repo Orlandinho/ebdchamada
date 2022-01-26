@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\Student;
 use App\Models\User;
-use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -47,10 +47,10 @@ class AdminClassController extends Controller
     {
         $attributes = $this->validateClass($request);
         try {
-            DB::transaction(function() use ($request, $attributes) {
+            $check = DB::transaction(function() use ($request, $attributes) {
                 $currentClass = Classroom::create($attributes);
 
-                if($request->name){
+                if(!empty($request->name)){
                     foreach($request->name as $key=>$id){
                         $user = User::find($id);
                         $user->classroom_id = $currentClass->id;
@@ -58,10 +58,14 @@ class AdminClassController extends Controller
                     }
                 }
             });
-            toast("Classe {$request->class} criada!",'success')->hideCloseButton();
-            return redirect()->route('admin.classrooms.index');
+            if(is_null($check)) {
+                toast("Classe {$request->class} criada!",'success')->hideCloseButton();
+                return redirect()->route('admin.classrooms.index');
+            } else {
+                throw new \Exception;
+            }
         } catch (\Exception $e) {
-            toast("Erro ao tentar criar a classe! ". $e->getMessage(),'error')->hideCloseButton();
+            alert("Algo deu errado!",'Erro ao tentar criar a classe! '. $e->getMessage(), 'error');
             return redirect()->back();
         }
     }
@@ -105,7 +109,7 @@ class AdminClassController extends Controller
     {
         $attributes = $this->validateClass($request);
         try {
-            DB::transaction(function() use ($request, $attributes, $classroom) {
+            $check = DB::transaction(function() use ($request, $attributes, $classroom) {
                 $classroom->update($attributes);
                 User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
                 if(!empty($request->name)){
@@ -116,10 +120,14 @@ class AdminClassController extends Controller
                     }
                 }
             });
-            toast("Classe {$request->class} atualizada!",'success')->hideCloseButton();
-            return redirect()->route('admin.classrooms.index');
+            if(is_null($check)) {
+                toast("Classe {$request->class} atualizada!",'success')->hideCloseButton();
+                return redirect()->route('admin.classrooms.index');
+            } else {
+                throw new \Exception;
+            }
         } catch (\Exception $e) {
-            toast("Erro ao tentar atualizar a classe! ". $e->getMessage() ,'error')->hideCloseButton();
+            alert("Algo deu errado!",'Erro ao tentar atualizar a classe! '. $e->getMessage(), 'error');
             return redirect()->back();
         }
     }
@@ -133,9 +141,26 @@ class AdminClassController extends Controller
     public function destroy(Classroom $classroom)
     {
         $name = $classroom->class;
-        //$classroom->delete();
-        toast("Classe {$name} excluída da base de dados!",'success')->hideCloseButton();
-        return redirect()->back();
+        try {
+            $check = DB::transaction(function() use ($classroom) {
+                if ($classroom->teachers->isNotEmpty()) {
+                    User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
+                }
+                if($classroom->students->isNotEmpty()){
+                    Student::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
+                }
+                $classroom->delete();
+            });
+            if(is_null($check)) {
+                toast("Classe {$name} excluída da base de dados!",'success')->hideCloseButton();
+                return redirect()->route('admin.classrooms.index');
+            } else {
+                throw new \Exception;
+            }
+        } catch(\Exception $e) {
+            alert("Algo deu errado!",'Erro ao tentar excluir a classe! '. $e->getMessage(), 'error');
+            return redirect()->back();
+        }
     }
 
     private function validateClass(Request $request)
@@ -149,6 +174,4 @@ class AdminClassController extends Controller
 
         return $attributes;
     }
-
-
 }

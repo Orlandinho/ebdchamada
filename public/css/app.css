@@ -647,10 +647,6 @@ select {
   margin-top: -0.5rem;
   margin-bottom: -0.5rem;
 }
-.my-auto {
-  margin-top: auto;
-  margin-bottom: auto;
-}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -716,12 +712,6 @@ select {
 }
 .mt-1 {
   margin-top: 0.25rem;
-}
-.mt-5 {
-  margin-top: 1.25rem;
-}
-.mb-5 {
-  margin-bottom: 1.25rem;
 }
 .block {
   display: block;
@@ -872,9 +862,6 @@ select {
 }
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-.flex-row {
-  flex-direction: row;
 }
 .flex-col {
   flex-direction: column;
