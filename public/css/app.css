@@ -710,6 +710,9 @@ select {
 .mb-8 {
   margin-bottom: 2rem;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
 .mt-1 {
   margin-top: 0.25rem;
 }
@@ -1040,6 +1043,9 @@ select {
 }
 .p-4 {
   padding: 1rem;
+}
+.p-0 {
+  padding: 0px;
 }
 .px-4 {
   padding-left: 1rem;
