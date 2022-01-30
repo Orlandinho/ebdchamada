@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col">
                         <p class="h4">Lista de Alunos</p>
-                        <div class="table-responsive p-0" style="height: 300px;">
+                        <div class="table-responsive p-0" style="height: 320px;">
                             <table class="table table-hover table-head-fixed text-nowrap">
                                 <thead>
                                     <tr>

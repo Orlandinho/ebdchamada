@@ -20,6 +20,7 @@
     <body class="hold-transition sidebar-mini sidebar-collapse">
         <div class="wrapper">
         @include('sweetalert::alert')
+
             {{ $slot }}
 
             <footer class="main-footer">

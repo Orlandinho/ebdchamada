@@ -32,8 +32,10 @@ class AdminClassController extends Controller
     public function create()
     {
         $teachers = User::whereNull('classroom_id')->get();
+        $students = Student::whereNull('classroom_id')->orderBy('name')->get();
         return view('admin.classroom_create', [
-            'teachers' => $teachers
+            'teachers' => $teachers,
+            'students' => $students
         ]);
     }
 
@@ -45,6 +47,7 @@ class AdminClassController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $attributes = $this->validateClass($request);
         try {
             $check = DB::transaction(function() use ($request, $attributes) {

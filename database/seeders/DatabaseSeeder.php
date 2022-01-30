@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         Classroom::factory()->create([
             'class' => 'Oficiais',
-            'slug' => 'oficias',
+            'slug' => 'oficiais',
             'description' => 'Professores e Administradores'
         ]);
 
