@@ -32,7 +32,7 @@ class AdminClassController extends Controller
     public function create()
     {
         $teachers = User::whereNull('classroom_id')->get();
-        $students = Student::whereNull('classroom_id')->orderBy('name')->get();
+        $students = Student::whereNull('classroom_id')->orderBy('dob')->get();
         return view('admin.classroom_create', [
             'teachers' => $teachers,
             'students' => $students
@@ -47,18 +47,15 @@ class AdminClassController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $attributes = $this->validateClass($request);
         try {
             $check = DB::transaction(function() use ($request, $attributes) {
                 $currentClass = Classroom::create($attributes);
-
                 if(!empty($request->name)){
-                    foreach($request->name as $key=>$id){
-                        $user = User::find($id);
-                        $user->classroom_id = $currentClass->id;
-                        $user->save();
-                    }
+                    User::whereIn('id', $request->name)->update(['classroom_id' => $currentClass->id]);
+                }
+                if(!empty($request->classroom_id)){
+                    Student::whereIn('id', $request->classroom_id)->update(['classroom_id' => $currentClass->id]);
                 }
             });
             if(is_null($check)) {
@@ -95,9 +92,11 @@ class AdminClassController extends Controller
     public function edit(Classroom $classroom)
     {
         $teachers = User::where('classroom_id', $classroom->id)->orWhereNull('classroom_id')->get();
+        $students = Student::where('classroom_id', $classroom->id)->orWhereNull('classroom_id')->orderBy('dob')->get();
         return view('admin.classroom_edit', [
             'classroom' => $classroom,
-            'teachers' => $teachers
+            'teachers' => $teachers,
+            'students' => $students
         ]);
     }
 
@@ -115,12 +114,12 @@ class AdminClassController extends Controller
             $check = DB::transaction(function() use ($request, $attributes, $classroom) {
                 $classroom->update($attributes);
                 User::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
+                Student::where('classroom_id', $classroom->id)->update(['classroom_id' => null]);
                 if(!empty($request->name)){
-                    foreach($request->name as $key=>$id){
-                        $user = User::find($id);
-                        $user->classroom_id = $classroom->id;
-                        $user->save();
-                    }
+                    User::whereIn('id', $request->name)->update(['classroom_id' => $classroom->id]);
+                }
+                if(!empty($request->classroom_id)){
+                    Student::whereIn('id', $request->classroom_id)->update(['classroom_id' => $classroom->id]);
                 }
             });
             if(is_null($check)) {

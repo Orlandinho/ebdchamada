@@ -4,8 +4,8 @@
     <x-admin.sidebar />
 
     <x-admin.form method="PATCH" route="/admin/classrooms/{{ $classroom->slug }}" name="Editando a classe {{ $classroom->class }}">
-        <div class="card-body">
-            <div class="col-md-6">
+        <div class="card-body d-flex">
+            <div class="col-md-5">
                 <x-form.input name="class" nome="classe" :value="old('class', $classroom->class)" autofocus/>
                 <x-form.input name="description" nome="descrição" :value="old('slug', $classroom->description)"/>
                 <div class="form-group">
@@ -23,8 +23,23 @@
                 </div>
                 <x-form.submit-button>Atualizar</x-form.submit-button>
             </div>
-            <div class="col-md-6">
-                <p class="h5">Alunos sem classe definida</p>
+            <div class="col-md-7">
+                <label>Alunos</label>
+                <div class="container rounded-sm pt-2 pl-2" style="height: 260px; border: solid 1px #ccc; overflow: auto">
+                    <div class="row">
+                        @foreach($students as $student)
+                            @if($loop->odd)
+                                <div class="col-md-6">
+                                    <x-form.checkbox :student="$student" />
+                                </div>
+                            @else
+                                <div class="col-md-6">
+                                    <x-form.checkbox :student="$student" />
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </x-admin.form>
