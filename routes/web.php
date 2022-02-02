@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminClassController;
+use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\ClassroomController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,16 @@ Route::prefix('admin')
     Route::get('/classrooms/{classroom:slug}/edit', [AdminClassController::class, 'edit'])->name('edit');
     Route::patch('/classrooms/{classroom:slug}', [AdminClassController::class, 'update'])->name('update');
     Route::delete('/classrooms/{classroom:slug}', [AdminClassController::class, 'destroy'])->name('delete');
+});
+
+Route::prefix('admin')
+    ->name('admin.students.')
+    ->group(function() {
+        Route::get('/students', [AdminStudentController::class, 'index'])->name('index');
+    });
+
+Route::get('admin/dashboard', function(){
+    return view('admin.dashboard');
 });
 
 Route::get('classes/{classroom:slug}', [ClassroomController::class, 'show']);

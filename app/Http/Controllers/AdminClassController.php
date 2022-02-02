@@ -15,7 +15,7 @@ class AdminClassController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index()
     {
@@ -27,7 +27,7 @@ class AdminClassController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function create()
     {
@@ -43,7 +43,7 @@ class AdminClassController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
      */
     public function store(Request $request)
     {
@@ -74,7 +74,7 @@ class AdminClassController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
     public function show(Classroom $classroom)
     {
@@ -87,7 +87,7 @@ class AdminClassController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
     public function edit(Classroom $classroom)
     {
@@ -105,7 +105,7 @@ class AdminClassController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
     public function update(Request $request, Classroom $classroom)
     {
@@ -137,8 +137,8 @@ class AdminClassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  App\Models\Classroom $classroom
+     *
      */
     public function destroy(Classroom $classroom)
     {
@@ -165,10 +165,17 @@ class AdminClassController extends Controller
         }
     }
 
+    /**
+     * Validate data from request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     */
+
     private function validateClass(Request $request)
     {
         $attributes = $request->validate([
-            'class' => 'required', Rule::unique('classrooms','slug')->ignore($request->id),
+            'class' => 'required', Rule::unique('classrooms','class')->ignore($request->id),
             'description' => 'required'
         ]);
 
