@@ -21,7 +21,7 @@ class CreateStudentsTable extends Migration
             $table->date('dob')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('visitor')->default(false);
-            $table->string('avatar')->default('/avatars/default.png')->nullable();
+            $table->string('avatar')->default('/avatars/default.png');
             $table->timestamps();
         });
     }

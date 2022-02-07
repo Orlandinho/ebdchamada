@@ -7,7 +7,7 @@
         <div class="card-body d-flex">
             <div class="col-md-5">
                 <x-form.input name="class" nome="classe" :value="old('class', $classroom->class)" autofocus/>
-                <x-form.input name="description" nome="descrição" :value="old('slug', $classroom->description)"/>
+                <x-form.input name="description" nome="descrição" :value="old('description', $classroom->description)"/>
                 <div class="form-group">
                     <x-form.label name="name">{{ $classroom->id === 1 ? 'Superintendente' : 'Professores' }}</x-form.label>
                     <small class="text-info float-right">É possível selecionar mais de um professor</small>
@@ -27,17 +27,20 @@
                 <label>Alunos</label>
                 <div class="container rounded-sm pt-2 pl-2" style="height: 260px; border: solid 1px #ccc; overflow: auto">
                     <div class="row">
-                        @foreach($students as $student)
-                            @if($loop->odd)
-                                <div class="col-md-6">
+                        <div class="col-md-6">
+                            @foreach($students as $student)
+                                @if($loop->odd)
                                     <x-form.checkbox :student="$student" />
-                                </div>
-                            @else
-                                <div class="col-md-6">
+                                @endif
+                            @endforeach
+                        </div>
+                        <div class="col-md-6">
+                            @foreach($students as $student)
+                                @if($loop->even)
                                     <x-form.checkbox :student="$student" />
-                                </div>
-                            @endif
-                        @endforeach
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>

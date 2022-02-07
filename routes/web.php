@@ -21,6 +21,7 @@ Route::prefix('admin')
     ->name('admin.students.')
     ->group(function() {
         Route::get('/students', [AdminStudentController::class, 'index'])->name('index');
+        Route::get('/students/create', [AdminStudentController::class, 'create'])->name('create');
     });
 
 Route::get('admin/dashboard', function(){

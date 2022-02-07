@@ -1,7 +1,7 @@
-@props(['name', 'nome'])
+@props(['name', 'nome', 'type' => ''])
 
-<div class="form-group">
+<div {{ $attributes->merge(['class' => 'form-group']) }}>
     <x-form.label name="{{ $name }}">{{ ucwords($nome) }}</x-form.label>
-    <input class="form-control" id="{{ $name }}" {{ $attributes([ 'value' => old($name)]) }} name="{{ $name }}" placeholder="{{ ucwords($nome) }}">
+    <input id="{{ $name }}" class="form-control" type="{{ empty($type) ? 'text' : $type }}" {{ $type === 'file' ? "formenctype='multipart/form-data'" : ''}} value="{{ old($name) }}" name="{{ $name }}">
     <x-form.errors name="{{ $name }}" />
 </div>

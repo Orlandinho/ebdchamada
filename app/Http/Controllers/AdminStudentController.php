@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,9 @@ class AdminStudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.student_create',[
+            'classrooms' => Classroom::all()
+        ]);
     }
 
     /**

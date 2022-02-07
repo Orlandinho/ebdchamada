@@ -38,6 +38,9 @@
 
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    {{-- input mask --}}
+    <script src={{ asset('plugins/moment/moment.min.js') }}></script>
+    <script src={{ asset('plugins/inputmask/jquery.inputmask.min.js') }}></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- select2 plugin -->
@@ -51,7 +54,48 @@
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
+
+            //inputmask
+            $('#dob').inputmask('datetime', {inputFormat: 'dd/mm/yyyy', placeholder:'dd/mm/aaaa'})
+            $('#zipcode').inputmask('99999-999', {placeholder: 'xxxxx-xxx'})
+            $('#cel').inputmask('(99) 99999-9999', {placeholder: '(xx) xxxxx-xxxx'})
+            $('#tel').inputmask('(99) 9999-9999', {placeholder: '(xx) xxxx-xxxx'})
         });
+
+        let zipcode = document.getElementById('zipcode')
+        zipcode.addEventListener('blur', e => {
+            let cep = zipcode.value.replace(/\D/g, '')
+            let address = document.getElementById('address')
+            let neighborhood = document.getElementById('neighborhood')
+            let city = document.getElementById('city')
+            let cel = document.getElementById('cel')
+
+            fetch('https://viacep.com.br/ws/'+ cep +'/json/')
+            .then(response => response.json())
+            .then(json => {
+                Swal.fire({
+                    title: 'CEP encontrado!',
+                    html: `Encontramos as informações referentes ao cep <b>${zipcode.value}</b>! Deseja preencher os campos de endereço com elas?`,
+                    icon: 'success',
+                    customClass:{
+                        confirmButton: 'btn btn-outline-success mr-3',
+                        cancelButton: 'btn btn-outline-danger'
+                    },
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Preencher',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        address.value = json.logradouro
+                        neighborhood.value = json.bairro
+                        city.value = json.localidade
+                    }
+                })
+            }).catch(err => {
+                console.log(err)
+            })
+        })
 
         document.querySelectorAll('.deleteclass').forEach(classroom => {
             classroom.addEventListener('submit', e => {
