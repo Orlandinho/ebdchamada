@@ -135,6 +135,28 @@ return [
         'description' => [
             'required' => 'A descrição da classe é necessária',
         ],
+        'cel' => [
+            'regex' => 'Esse não é um formato válido de celular'
+        ],
+        'tel' => [
+            'regex' => 'Esse não é um formato válido de telefone fixo'
+        ],
+        'zipcode' => [
+            'regex' => 'Esse não é um formato válido de cep'
+        ],
+        'dob' => [
+            'date' => 'A data de nascimento não está em um formato válido',
+            'required' => 'A data de nascimento é obrigatório'
+        ],
+        'name' => [
+            'required' => 'Campo obrigatório',
+            'min' => 'O nome deve conter mais de um caractere'
+        ],
+        'avatar' => [
+            'image' => 'O arquivo precisa ser uma imagem',
+            'mimes' => 'Apenas os formatos .jpeg, .jpg e .png são aceitos'
+        ],
+
     ],
 
     /*

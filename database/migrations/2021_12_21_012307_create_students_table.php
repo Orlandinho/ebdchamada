@@ -18,10 +18,11 @@ class CreateStudentsTable extends Migration
             $table->foreignId('classroom_id')->nullable()->constrained();
             $table->string('name');
             $table->string('slug');
+            $table->string('email')->nullable();
             $table->date('dob')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('visitor')->default(false);
-            $table->string('avatar')->default('/avatars/default.png');
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

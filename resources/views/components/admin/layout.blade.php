@@ -57,45 +57,61 @@
 
             //inputmask
             $('#dob').inputmask('datetime', {inputFormat: 'dd/mm/yyyy', placeholder:'dd/mm/aaaa'})
-            $('#zipcode').inputmask('99999-999', {placeholder: 'xxxxx-xxx'})
-            $('#cel').inputmask('(99) 99999-9999', {placeholder: '(xx) xxxxx-xxxx'})
-            $('#tel').inputmask('(99) 9999-9999', {placeholder: '(xx) xxxx-xxxx'})
+            $('#zipcode').inputmask('99999-999', {placeholder: ''})
+            $('#cel').inputmask('(99) 99999-9999', {placeholder: ''})
+            $('#tel').inputmask('(99) 9999-9999', {placeholder: ''})
         });
 
         let zipcode = document.getElementById('zipcode')
-        zipcode.addEventListener('blur', e => {
-            let cep = zipcode.value.replace(/\D/g, '')
-            let address = document.getElementById('address')
-            let neighborhood = document.getElementById('neighborhood')
-            let city = document.getElementById('city')
-            let cel = document.getElementById('cel')
+        if (zipcode) {
+            zipcode.addEventListener('blur', e => {
+                let cep = zipcode.value.replace(/\D/g, '')
+                let address = document.getElementById('address')
+                let neighborhood = document.getElementById('neighborhood')
+                let city = document.getElementById('city')
 
-            fetch('https://viacep.com.br/ws/'+ cep +'/json/')
-            .then(response => response.json())
-            .then(json => {
-                Swal.fire({
-                    title: 'CEP encontrado!',
-                    html: `Encontramos as informações referentes ao cep <b>${zipcode.value}</b>! Deseja preencher os campos de endereço com elas?`,
-                    icon: 'success',
-                    customClass:{
-                        confirmButton: 'btn btn-outline-success mr-3',
-                        cancelButton: 'btn btn-outline-danger'
-                    },
-                    buttonsStyling: false,
-                    showCancelButton: true,
-                    confirmButtonText: 'Preencher',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        address.value = json.logradouro
-                        neighborhood.value = json.bairro
-                        city.value = json.localidade
-                    }
+                fetch('https://viacep.com.br/ws/' + cep + '/json/')
+                    .then(response => response.json())
+                    .then(json => {
+                        if (json.erro) {
+                            Swal.fire({
+                                title: 'Oops!',
+                                html: `O cep <b>${zipcode.value}</b> não retornou nenhuma informação`,
+                                icon: 'error',
+                                customClass: {
+                                    cancelButton: 'btn btn-outline-danger'
+                                },
+                                buttonsStyling: false,
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                                cancelButtonText: 'Ok'
+                            })
+                        } else {
+                            Swal.fire({
+                                title: 'Endereço encontrado!',
+                                html: `Logradouro <b>${json.logradouro}</b>, bairro <b>${json.bairro}</b> e cidade <b>${json.localidade}</b>. Deseja preencher os demais campos de endereço com esses dados?`,
+                                icon: 'success',
+                                customClass: {
+                                    confirmButton: 'btn btn-outline-success mr-3',
+                                    cancelButton: 'btn btn-outline-danger'
+                                },
+                                buttonsStyling: false,
+                                showCancelButton: true,
+                                confirmButtonText: 'Preencher',
+                                cancelButtonText: 'Cancelar',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    address.value = json.logradouro
+                                    neighborhood.value = json.bairro
+                                    city.value = json.localidade
+                                }
+                            })
+                        }
+                    }).catch(err => {
+                    console.log(err)
                 })
-            }).catch(err => {
-                console.log(err)
             })
-        })
+        }
 
         document.querySelectorAll('.deleteclass').forEach(classroom => {
             classroom.addEventListener('submit', e => {

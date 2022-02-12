@@ -2,6 +2,6 @@
 
 <div {{ $attributes->merge(['class' => 'form-group']) }}>
     <x-form.label name="{{ $name }}">{{ ucwords($nome) }}</x-form.label>
-    <input id="{{ $name }}" class="form-control" type="{{ empty($type) ? 'text' : $type }}" {{ $type === 'file' ? "formenctype='multipart/form-data'" : ''}} value="{{ old($name) }}" name="{{ $name }}">
+    <input id="{{ $name }}" class="form-control" type="{{ empty($type) ? 'text' : $type }}" {{ $nome = 'nome' ? 'autofocus' : '' }} value="{{ old($name) }}" name="{{ $name }}">
     <x-form.errors name="{{ $name }}" />
 </div>

@@ -14,6 +14,7 @@ class Student extends Model
         'classroom_id',
         'name',
         'slug',
+        'email',
         'dob',
         'active',
         'visitor',

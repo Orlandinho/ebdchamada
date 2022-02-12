@@ -16,12 +16,12 @@ class CreateInformationTable extends Migration
         Schema::create('information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->string('street');
-            $table->string('neighborhood');
-            $table->string('city');
-            $table->string('zipcode');
-            $table->string('tel');
-            $table->string('cel');
+            $table->string('street')->nullable();
+            $table->string('neighborhood')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('tel')->nullable();
+            $table->string('cel')->nullable();
             $table->timestamps();
         });
     }

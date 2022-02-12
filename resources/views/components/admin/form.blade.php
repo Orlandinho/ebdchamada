@@ -1,4 +1,4 @@
-@props(['method','route','header','name'])
+@props(['method','route','header','name','file' => null])
 <div class="content-wrapper">
 
     <!-- Main content -->
@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="POST" action="{{ $route }}">
+                    <form method="POST" action="{{ $route }}" {{ $file }}>
                         @csrf
                         @method($method)
 

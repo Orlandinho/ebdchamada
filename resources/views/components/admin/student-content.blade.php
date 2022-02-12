@@ -49,7 +49,7 @@
                             @endif">
                             <td class="d-flex align-items-center">
                                 <div class="image mr-3">
-                                    <img src="{{ asset('/storage/avatars/default'.rand(1,5).'.png') }}" class="img-circle elevation-2" style="width: 40px;" alt="User Image">
+                                    <img src="{{ asset('storage/'.$student->avatar) }}" class="img-circle elevation-2" style="width: 40px;" alt="User Image">
                                 </div>
                                 <div>
                                     {{ $student->name }}

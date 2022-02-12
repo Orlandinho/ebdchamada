@@ -17,10 +17,11 @@ class StudentFactory extends Factory
             'classroom_id' => $this->faker->numberBetween(1, 5),
             'name' => $this->faker->name(),
             'slug' => $this->faker->firstName(),
+            'email' => $this->faker->email(),
             'dob' => $this->faker->dateTimeBetween('-35 years', '-18 years'),
             'active' => true,
             'visitor' => false,
-            'avatar' => '/avatars/default.png'
+            'avatar' => 'avatars/default'.rand(1,5).'.png'
         ];
     }
 }
