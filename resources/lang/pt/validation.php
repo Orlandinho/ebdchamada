@@ -145,8 +145,9 @@ return [
             'regex' => 'Esse não é um formato válido de cep'
         ],
         'dob' => [
-            'date' => 'A data de nascimento não está em um formato válido',
-            'required' => 'A data de nascimento é obrigatório'
+            'date_format' => 'A data de nascimento não está em um formato válido',
+            'required' => 'A data de nascimento é obrigatório',
+            'before_or_equal' => 'A data deve ser igual ou inferior a data atual'
         ],
         'name' => [
             'required' => 'Campo obrigatório',

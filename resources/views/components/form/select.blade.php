@@ -1,8 +1,8 @@
-@props(['name','nome','classrooms'])
+@props(['name','nome','bsclass' => null,'classrooms'])
 
-<div {{ $attributes->merge(['class' => 'form-group']) }}>
+<div class="form-group {{ $bsclass }}">
     <x-form.label name="{{ $name }}">{{ ucwords($nome) }}</x-form.label>
-    <select class="form-control" id="{{ $name }}" name="{{ $name }}">
+    <select {{ $attributes->merge(['class' => 'form-control']) }} id="{{ $name }}" name="{{ $name }}">
         @foreach($classrooms as $classroom)
             <option value="{{ $classroom->id }}">{{ $classroom->class }}</option>
         @endforeach

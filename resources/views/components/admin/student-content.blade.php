@@ -35,7 +35,7 @@
                         <th>Data Nasc.</th>
                         <th>Idade</th>
                         <th>Status</th>
-                        <th>#</th>
+                        <th>Ações</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,13 +47,16 @@
                             @else
 
                             @endif">
-                            <td class="d-flex align-items-center">
-                                <div class="image mr-3">
-                                    <img src="{{ asset('storage/'.$student->avatar) }}" class="img-circle elevation-2" style="width: 40px;" alt="User Image">
-                                </div>
-                                <div>
-                                    {{ $student->name }}
-                                </div>
+                            <td>
+                                <a href="/admin/students/{{ $student->slug }}" class="d-inline-flex align-items-center text-dark">
+                                    <div class="image mr-3">
+                                        <img src="{{ $student->avatar !== null ? asset('storage/'.$student->avatar) : asset('storage/avatars/avatar.png') }}"
+                                             class="img-circle elevation-2" style="width: 40px;" alt="User Image">
+                                    </div>
+                                    <div>
+                                        <u>{{ $student->name }}</u>
+                                    </div>
+                                </a>
                             </td>
                             <td class="align-middle">{{ \App\Models\Classroom::find($student->classroom_id)->class ?? '---' }}</td>
                             <td class="align-middle">{{ $student->getDob() }}</td>
@@ -68,7 +71,10 @@
                                 @endif
                             </td>
                             <td class="align-middle">
-                                <a href="#">Mais</a>
+                                <div class="d-inline align-items-center">
+                                    <a href="/admin/students/{{ $student->slug }}/edit"><i class="fas fa-edit text-secondary"></i></a>
+                                    <a href="/#" class="ml-4"><i class="fas fa-trash-alt text-danger"></i></a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -39,14 +39,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Alunos entre 12 e 18 anos'
         ]);
 
-        Student::factory(10)->create([
-            'classroom_id' => 2
-        ]);
-
-        Student::factory(8)->create([
-            'classroom_id' => 3,
-            'dob' => $this->faker->dateTimeBetween('-18 years', '-12 years')
-        ]);
+        Student::factory(80)->create();
 
         Role::factory()->create([
             'name' => 'professor'

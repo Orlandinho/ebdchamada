@@ -729,6 +729,9 @@ select {
 .mr-2 {
   margin-right: 0.5rem;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
 .mt-6 {
   margin-top: 1.5rem;
 }
@@ -752,9 +755,6 @@ select {
 }
 .mr-4 {
   margin-right: 1rem;
-}
-.mb-2 {
-  margin-bottom: 0.5rem;
 }
 .mb-8 {
   margin-bottom: 2rem;
@@ -984,14 +984,14 @@ select {
 .rounded-md {
   border-radius: 0.375rem;
 }
+.rounded {
+  border-radius: 0.25rem;
+}
 .rounded-sm {
   border-radius: 0.125rem;
 }
 .rounded-full {
   border-radius: 9999px;
-}
-.rounded {
-  border-radius: 0.25rem;
 }
 .rounded-l-md {
   border-top-left-radius: 0.375rem;

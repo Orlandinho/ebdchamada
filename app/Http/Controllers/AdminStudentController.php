@@ -63,7 +63,7 @@ class AdminStudentController extends Controller
 
                 Information::create([
                     'student_id' => $newStudent->id,
-                    'street' => $attributes['address'],
+                    'address' => $attributes['address'],
                     'neighborhood' => $attributes['neighborhood'],
                     'city' => $attributes['city'],
                     'zipcode' => $attributes['zipcode'],
@@ -89,23 +89,28 @@ class AdminStudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param
      *
      */
-    public function show($id)
+    public function show(Student $student)
     {
-        //
+        return view('admin.student_show', [
+            'student' => $student
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Student
      *
      */
-    public function edit($id)
+    public function edit(Student $student)
     {
-        //
+        dd($student);
+        return view('admin.student_edit', [
+            'student' => $student
+        ]);
     }
 
     /**
@@ -135,14 +140,14 @@ class AdminStudentController extends Controller
     {
         $attributes = $request->validate([
             'name' => ['required','min:2','max:60'],
-            'dob' => ['required','date'],
+            'dob' => ['required','date_format:d/m/Y','before_or_equal:date'],
             'classroom_id' => ['required', Rule::exists('classrooms','id')],
-            'zipcode' => ['nullable','regex:/^[0-9]{5}-[0-9]{3}$/'],
+            'zipcode' => ['nullable','regex:/^(\d){5}-(\d){3}$/'],
             'address' => ['nullable','min:5', 'max:60'],
             'neighborhood' => ['nullable','min:2','max:30'],
             'city' => ['nullable','min:3'],
-            'cel' => ['nullable','regex:/^\([0-9]{2}\) 9(\d){4}-(\d){4}$/'],
-            'tel' => ['nullable','regex:/^\([0-9]{2}\) [0-9]{4}-[0-9]{4}$/'],
+            'cel' => ['nullable','regex:/^\((\d){2}\) 9(\d){4}-(\d){4}$/'],
+            'tel' => ['nullable','regex:/^\((\d){2}\) (\d){4}-(\d){4}$/'],
             'email' => ['nullable','email'],
             'avatar' => ['nullable','image','mimes:jpeg,jpg,png']
         ]);
@@ -150,7 +155,7 @@ class AdminStudentController extends Controller
         $attributes['avatar'] = $request->file('avatar')?->store('avatars');
 
         $attributes['dob'] = Carbon::createFromFormat('d/m/Y', $request->dob)->format('Y-m-d');
-        $attributes['slug'] = Str::slug(explode(' ', $request->name)[0] . $attributes['dob']);
+        $attributes['slug'] = Str::slug(explode(' ', $request->name)[0] . '-' . $attributes['dob']);
 
         return $attributes;
     }

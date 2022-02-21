@@ -16,7 +16,7 @@ class CreateInformationTable extends Migration
         Schema::create('information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->string('street')->nullable();
+            $table->string('address')->nullable();
             $table->string('neighborhood')->nullable();
             $table->string('city')->nullable();
             $table->string('zipcode')->nullable();

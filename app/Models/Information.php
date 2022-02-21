@@ -11,7 +11,7 @@ class Information extends Model
 
     protected $fillable = [
         'student_id',
-        'street',
+        'address',
         'neighborhood',
         'city',
         'zipcode',

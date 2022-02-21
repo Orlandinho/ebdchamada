@@ -23,6 +23,8 @@ Route::prefix('admin')
         Route::get('/students', [AdminStudentController::class, 'index'])->name('index');
         Route::get('/students/create', [AdminStudentController::class, 'create'])->name('create');
         Route::post('/students', [AdminStudentController::class, 'store'])->name('store');
+        Route::get('/students/{student:slug}', [AdminStudentController::class, 'show'])->name('{student:slug}');
+        Route::get('/students/{student:slug}/edit', [AdminStudentController::class, 'edit'])->name('edit');
     });
 
 Route::get('admin/dashboard', function(){
