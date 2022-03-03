@@ -28,7 +28,7 @@
         </div>
         <div class="d-block">
             <label>Visitante: </label>
-            <p class="d-inline">{{ $student->visitant ? 'Sim' : 'Não' }}</p>
+            <p class="d-inline">{{ $student->visitor ? 'Sim' : 'Não' }}</p>
         </div>
         <div class="d-block">
             <label>E-mail: </label>

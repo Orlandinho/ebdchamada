@@ -58,7 +58,8 @@ class AdminStudentController extends Controller
                     'slug' => $attributes['slug'],
                     'email' => $attributes['email'],
                     'dob' => $attributes['dob'],
-                    'avatar' => $attributes['avatar']
+                    'avatar' => $attributes['avatar'],
+                    'visitor' => $attributes['visitor']
                 ]);
 
                 Information::create([
@@ -107,9 +108,9 @@ class AdminStudentController extends Controller
      */
     public function edit(Student $student)
     {
-        dd($student);
         return view('admin.student_edit', [
-            'student' => $student
+            'student' => $student,
+            'classrooms' => Classroom::all('id','class')
         ]);
     }
 
@@ -120,9 +121,28 @@ class AdminStudentController extends Controller
      * @param  int  $id
      *
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Student $student)
     {
-        //
+        $attributes = $this->validateRequest($request, $student);
+        dd($attributes);
+        try {
+            $check = DB::transaction(function() use ($request, $attributes, $student) {
+                $student->update($attributes);
+                Information::where('student_id', $student->id)->update($attributes);
+            });
+            if(is_null($check)) {
+                toast("Dados do aluno {$request->name} atualizados!",'success')->hideCloseButton();
+                return redirect()->route('admin.students.index');
+            } else {
+                throw new \Exception('Não foi possível realizar a atualização dos dados');
+            }
+        } catch (\Exception $e) {
+            if (!is_null($attributes['avatar']) && Storage::exists($attributes['avatar'])) {
+                Storage::delete($attributes['avatar']);
+            }
+            alert("Algo deu errado!","Erro ao tentar atualizar os dados do aluno {$request->name}! ". $e->getMessage(), 'error');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -136,7 +156,7 @@ class AdminStudentController extends Controller
         //
     }
 
-    private function validateRequest(Request $request)
+    private function validateRequest($request, $student = null)
     {
         $attributes = $request->validate([
             'name' => ['required','min:2','max:60'],
@@ -145,14 +165,26 @@ class AdminStudentController extends Controller
             'zipcode' => ['nullable','regex:/^(\d){5}-(\d){3}$/'],
             'address' => ['nullable','min:5', 'max:60'],
             'neighborhood' => ['nullable','min:2','max:30'],
-            'city' => ['nullable','min:3'],
+            'city' => ['nullable','min:3','max:30'],
             'cel' => ['nullable','regex:/^\((\d){2}\) 9(\d){4}-(\d){4}$/'],
             'tel' => ['nullable','regex:/^\((\d){2}\) (\d){4}-(\d){4}$/'],
-            'email' => ['nullable','email'],
-            'avatar' => ['nullable','image','mimes:jpeg,jpg,png']
+            'email' => ['nullable','email','max:50'],
+            'avatar' => ['nullable','image','mimes:jpeg,jpg,png','max:2048']
         ]);
 
-        $attributes['avatar'] = $request->file('avatar')?->store('avatars');
+        $attributes['active'] = $request->active ?? 0;
+        $attributes['visitor'] = $request->visitor ?? 0;
+
+        if ($student) {
+            if (isset($request->avatar) && Storage::exists($student->avatar)) {
+                Storage::delete($student->avatar);
+                $attributes['avatar'] = $request->file('avatar')?->store('avatars');
+            } else {
+                $attributes['avatar'] = $student->avatar;
+            }
+        } else {
+            $attributes['avatar'] = $request->file('avatar')?->store('avatars');
+        }
 
         $attributes['dob'] = Carbon::createFromFormat('d/m/Y', $request->dob)->format('Y-m-d');
         $attributes['slug'] = Str::slug(explode(' ', $request->name)[0] . '-' . $attributes['dob']);

@@ -40,7 +40,7 @@
                     @foreach($classroom->students as $student)
                         <tr class="@if($student->visitor)
                             text-olive
-                                @elseif(! $student->active)
+                                @elseif(! $student->active & ! $student->visitor)
                             text-maroon
                                 @else
 

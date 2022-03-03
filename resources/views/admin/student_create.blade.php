@@ -20,8 +20,11 @@
             <div class="form-row">
                 <x-form.input name="cel" nome="celular" bsclass="col-lg-2" value="{{ old('cel') }}" />
                 <x-form.input name="tel" nome="tel fixo" bsclass="col-lg-2" value="{{ old('tel') }}" />
-                <x-form.input name="email" nome="e-mail" type="email" bsclass="col-lg-4" value="{{ old('email') }}" />
-                <x-form.input name="avatar" nome="foto" type="file" bsclass="col-lg-4" value="{{ old('avatar') }}" />
+                <x-form.input name="email" nome="e-mail" type="email" bsclass="col-lg-3" value="{{ old('email') }}" />
+                <x-form.input name="avatar" nome="foto" type="file" bsclass="col-lg-3" value="{{ old('avatar') }}" />
+            </div>
+            <div class="form-group ml-1">
+                <x-form.checkbox-visitant name="visitor" nome="visitante" />
             </div>
             <div>
                 <x-form.submit-button>Cadastrar Aluno</x-form.submit-button>

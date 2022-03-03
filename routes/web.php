@@ -25,6 +25,8 @@ Route::prefix('admin')
         Route::post('/students', [AdminStudentController::class, 'store'])->name('store');
         Route::get('/students/{student:slug}', [AdminStudentController::class, 'show'])->name('{student:slug}');
         Route::get('/students/{student:slug}/edit', [AdminStudentController::class, 'edit'])->name('edit');
+        Route::patch('/students/{student:slug}', [AdminStudentController::class, 'update'])->name('update');
+        Route::delete('/students/{student:slug}', [AdminStudentController::class, 'destroy'])->name('delete');
     });
 
 Route::get('admin/dashboard', function(){
