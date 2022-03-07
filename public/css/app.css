@@ -693,6 +693,10 @@ select {
   margin-top: -0.5rem;
   margin-bottom: -0.5rem;
 }
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -809,6 +813,9 @@ select {
 }
 .h-20 {
   height: 5rem;
+}
+.h-auto {
+  height: auto;
 }
 .min-h-screen {
   min-height: 100vh;

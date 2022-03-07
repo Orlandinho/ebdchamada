@@ -22,6 +22,13 @@
                 <x-form.input name="tel" nome="tel fixo" bsclass="col-lg-2" :value="old('tel', $student->information?->tel)" />
                 <x-form.input name="email" nome="e-mail" type="email" bsclass="col-lg-3" :value="old('email', $student?->email)" />
                 <x-form.input name="avatar" nome="foto" type="file" bsclass="col-lg-3" :value="old('avatar', $student?->avatar)" />
+                @if($student->avatar)
+                    <div class="col-lg-2">
+                        <img src="{{ asset('storage/'.$student->avatar) }}" class="rounded elevation-2 d-block mx-auto" style="width: 96px;" alt="User Image">
+                    </div>
+                @else
+                    <p class="my-auto mx-auto">Não há foto</p>
+                @endif
             </div>
             <div class="form-row">
                 <div class="form-group ml-2">

@@ -16,11 +16,6 @@ use mysql_xdevapi\Exception;
 
 class AdminStudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     *
-     */
     public function index()
     {
         return view('admin.student_index',[
@@ -28,11 +23,6 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     *
-     */
     public function create()
     {
         return view('admin.student_create',[
@@ -40,12 +30,6 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     */
     public function store(Request $request)
     {
         $attributes = $this->validateRequest($request);
@@ -87,12 +71,6 @@ class AdminStudentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param
-     *
-     */
     public function show(Student $student)
     {
         return view('admin.student_show', [
@@ -100,12 +78,6 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Student
-     *
-     */
     public function edit(Student $student)
     {
         return view('admin.student_edit', [
@@ -114,21 +86,30 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     *
-     */
     public function update(Request $request, Student $student)
     {
         $attributes = $this->validateRequest($request, $student);
-        dd($attributes);
         try {
             $check = DB::transaction(function() use ($request, $attributes, $student) {
-                $student->update($attributes);
-                Information::where('student_id', $student->id)->update($attributes);
+                $student->update([
+                    'classroom_id' => $attributes['classroom_id'],
+                    'name' => $attributes['name'],
+                    'slug' => $attributes['slug'],
+                    'email' => $attributes['email'],
+                    'dob' => $attributes['dob'],
+                    'avatar' => $attributes['avatar'],
+                    'visitor' => $attributes['visitor'],
+                    'active' => $attributes['active']
+                ]);
+
+                Information::where('student_id', $student->id)->update([
+                    'address' => $attributes['address'],
+                    'neighborhood' => $attributes['neighborhood'],
+                    'city' => $attributes['city'],
+                    'zipcode' => $attributes['zipcode'],
+                    'cel' => $attributes['cel'],
+                    'tel' => $attributes['tel']
+                ]);
             });
             if(is_null($check)) {
                 toast("Dados do aluno {$request->name} atualizados!",'success')->hideCloseButton();
@@ -145,18 +126,24 @@ class AdminStudentController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
-     */
-    public function destroy($id)
+    public function destroy(Student $student)
     {
-        //
+        dd('teste');
+        if ($student->avatar ==! null) {
+            Storage::delete($student->avatar);
+        }
+        $studentName = $student->name;
+        try {
+            $student->delete();
+            toast("Dados do aluno {$studentName} excluídos!", 'success')->hideCloseButton();
+            return redirect()->route('admin.students.index');
+        } catch (\Exception $e) {
+            alert('Algo deu errado', "Erro ao tentar excluir os dados do aluno {$studentName}", 'error');
+            return redirect()->back();
+        }
     }
 
-    private function validateRequest($request, $student = null)
+    private function validateRequest(Request $request, $student = null)
     {
         $attributes = $request->validate([
             'name' => ['required','min:2','max:60'],
@@ -175,10 +162,10 @@ class AdminStudentController extends Controller
         $attributes['active'] = $request->active ?? 0;
         $attributes['visitor'] = $request->visitor ?? 0;
 
-        if ($student) {
-            if (isset($request->avatar) && Storage::exists($student->avatar)) {
+        if ($student->avatar ==! null && Storage::exists($student->avatar)) {
+            if (isset($request->avatar)) {
                 Storage::delete($student->avatar);
-                $attributes['avatar'] = $request->file('avatar')?->store('avatars');
+                $attributes['avatar'] = $request->file('avatar')->store('avatars');
             } else {
                 $attributes['avatar'] = $student->avatar;
             }

@@ -113,13 +113,16 @@
             })
         }
 
-        document.querySelectorAll('.deleteclass').forEach(classroom => {
-            classroom.addEventListener('submit', e => {
+        document.querySelectorAll('.deleteclass').forEach(classData => {
+            classData.addEventListener('submit', e => {
                 e.preventDefault()
-                let className = classroom.querySelector('.classname').getAttribute('data-name')
+                let className = classData.querySelector('.classname').getAttribute('data-name')
+                let isClass = classData.querySelector('.classname').getAttribute('data-isclass')
+                let message = (isClass == 1 ? `Ao deletar a classe <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?` : `Ao deletar o aluno <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`)
+
                 Swal.fire({
                     title: 'Atenção!',
-                    html: `Ao deletar a classe <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`,
+                    html: message,
                     icon: 'warning',
                     customClass:{
                         confirmButton: 'btn btn-outline-success mr-3',
@@ -131,7 +134,7 @@
                     cancelButtonText: 'Cancelar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        classroom.submit()
+                        classData.submit()
                     }
                 })
             })
