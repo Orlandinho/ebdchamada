@@ -19,6 +19,7 @@ class UserFactory extends Factory
             'role_id' => $this->faker->numberBetween(0, 2),
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
+            'avatar' => null,
             'email_verified_at' => now(),
             'password' => 'password',
             'remember_token' => Str::random(10),

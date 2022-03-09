@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminClassController;
 use App\Http\Controllers\AdminStudentController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ClassroomController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,18 @@ Route::prefix('admin')
         Route::get('/students/{student:slug}/edit', [AdminStudentController::class, 'edit'])->name('edit');
         Route::patch('/students/{student:slug}', [AdminStudentController::class, 'update'])->name('update');
         Route::delete('/students/{student:slug}', [AdminStudentController::class, 'destroy'])->name('delete');
+    });
+
+Route::prefix('admin')
+    ->name('admin.users.')
+    ->group(function() {
+        Route::get('/users', [AdminUserController::class, 'index'])->name('index');
+        Route::get('/users/create', [AdminUserController::class, 'create'])->name('create');
+        Route::post('/users', [AdminUserController::class, 'store']);
+        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('{user}');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('edit');
+        Route::patch('/users/{user}', [AdminUserController::class, 'update']);
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
     });
 
 Route::get('admin/dashboard', function(){

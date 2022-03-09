@@ -26,7 +26,7 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="float-right d-none d-sm-inline">
-                    Anything you want
+                    Desenvolvido por <a href="https://github.com/Orlandinho">Orlando</a>
                 </div>
                 <!-- Default to the left -->
                 <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
@@ -118,7 +118,7 @@
                 e.preventDefault()
                 let className = classData.querySelector('.classname').getAttribute('data-name')
                 let isClass = classData.querySelector('.classname').getAttribute('data-isclass')
-                let message = (isClass == 1 ? `Ao deletar a classe <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?` : `Ao deletar o aluno <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`)
+                let message = (isClass == 1 ? `Ao deletar a classe <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?` : `Ao deletar os dados do(a) aluno(a) <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`)
 
                 Swal.fire({
                     title: 'Atenção!',

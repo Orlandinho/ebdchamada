@@ -53,6 +53,12 @@
                         <p>Alunos</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/admin/users" class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-id-card"></i>
+                        <p>Oficiais</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

@@ -8,7 +8,6 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,8 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->faker = Faker::create();
-
         Classroom::factory()->create([
             'class' => 'Oficiais',
             'slug' => 'oficiais',
@@ -42,13 +39,13 @@ class DatabaseSeeder extends Seeder
         Student::factory(80)->create();
 
         Role::factory()->create([
-            'name' => 'professor'
+            'name' => 'Professor'
         ]);
         Role::factory()->create([
-            'name' => 'assistent'
+            'name' => 'Assistente'
         ]);
         Role::factory()->create([
-            'name' => 'admin'
+            'name' => 'Admin'
         ]);
 
         User::factory()->create([
@@ -96,6 +93,16 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
             'name' => 'Irene',
             'email' => 'irene@example.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+        ]);
+
+        User::factory()->create([
+            'classroom_id' => null,
+            'role_id' => 2,
+            'name' => 'Fernanda',
+            'email' => 'fernanda@example.com',
             'email_verified_at' => now(),
             'password' => 'password',
             'remember_token' => Str::random(10),
