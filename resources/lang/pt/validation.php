@@ -146,17 +146,26 @@ return [
         ],
         'dob' => [
             'date_format' => 'A data de nascimento não está em um formato válido',
-            'required' => 'A data de nascimento é obrigatório',
+            'required' => 'A data de nascimento é obrigatória',
             'before_or_equal' => 'A data deve ser igual ou inferior a data atual'
         ],
         'name' => [
-            'required' => 'Campo obrigatório',
+            'required' => 'Campo nome é obrigatório',
             'min' => 'O nome deve conter mais de um caractere'
         ],
         'avatar' => [
             'image' => 'O arquivo precisa ser uma imagem',
             'mimes' => 'Apenas os formatos .jpeg, .jpg e .png são aceitos'
         ],
+        'email' => [
+            'required' => 'Campo e-mail é obrigatório',
+            'email' => 'É necessário um endereço de e-mail válido',
+            'unique' => 'Esse endereço de e-mail já está sendo usado'
+        ],
+        'password' => [
+            'min' => 'A senha precisa ser de no mínimo :min caracteres',
+            'confirmed' => 'A confirmação da senha precisa ser idêntica com a desse campo'
+        ]
 
     ],
 
