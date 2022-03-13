@@ -23,6 +23,19 @@
             </div>
 
             <div class="form-group row">
+                <label for="classroom_id" class="col-sm-3 col-form-label">Classes</label>
+                <div class="col-sm-9">
+                    <select name="classroom_id" class="form-control" id="classroom_id">
+                        <option value=" ">-----</option>
+                        @foreach($classrooms as $classroom)
+                            <option value="{{ $classroom->id }}">{{ $classroom->class }}</option>
+                        @endforeach
+                    </select>
+                    <x-form.errors name="classroom_id" />
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label for="avatar" class="col-sm-3 col-form-label">Avatar</label>
                 <div class="col-sm-9">
                     <input type="file" name="avatar" class="form-control" id="avatar">
@@ -31,21 +44,6 @@
             </div>
 
             <div class="form-group row">
-                <label for="password" class="col-sm-3 col-form-label">Senha</label>
-                <div class="col-sm-9">
-                    <input type="password" name="password" class="form-control" id="password">
-                    <x-form.errors name="password" />
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="password_confirmation" class="col-sm-3 col-form-label">Confirme a Senha</label>
-                <div class="col-sm-9">
-                    <input type="password" name="password_confirmation" class="form-control" id="password_confirmation">
-                </div>
-            </div>
-
-            <div class="form-group row mt-2">
                 <label class="col-sm-3">Função</label>
                 <div class="col-sm-9">
                     <div class="form-check form-check-inline">

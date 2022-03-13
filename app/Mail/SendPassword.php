@@ -17,11 +17,13 @@ class SendPassword extends Mailable
      * @return void
      */
 
-    public $request;
+    public $user;
+    public $link;
 
-    public function __construct($request)
+    public function __construct($user, $link)
     {
-        $this->request = $request;
+        $this->user = $user;
+        $this->link = $link;
     }
 
     /**
