@@ -4,6 +4,8 @@
 
     <x-admin.sidebar />
 
-    <x-admin.dashboard-content />
+{{--    TODO
+        create a class component for the dashboard --}}
+    <x-admin.dashboard-content :users="$users" :students="$students" />
 
 </x-admin.layout>

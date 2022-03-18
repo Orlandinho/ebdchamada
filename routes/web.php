@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminClassController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ClassroomController;
@@ -44,11 +45,10 @@ Route::prefix('admin')
     });
 
 Route::get('/password/{user}/edit', [PasswordController::class, 'edit'])->name('password_create')->middleware('signed');
+Route::post('/password/resend/{user}', [PasswordController::class, 'resend']);
 Route::patch('/password/{user}', [PasswordController::class, 'update']);
 
-Route::get('admin/dashboard', function(){
-    return view('admin.dashboard');
-});
+Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
 
 Route::get('classes/{classroom:slug}', [ClassroomController::class, 'show']);
 

@@ -34,7 +34,6 @@ class SendPassword extends Mailable
     public function build()
     {
         return $this
-            ->from('huntertony10@gmail.com')
             ->subject('Senha de acesso ao sistema de chamada da IPVG')
             ->markdown('emails.passwords');
     }

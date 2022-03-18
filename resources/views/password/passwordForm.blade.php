@@ -80,6 +80,9 @@
             <h1 class="h3 mb-3 font-weight-normal">Crie sua senha</h1>
             <label for="password" class="sr-only">Senha</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required autofocus>
+            @error('password')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
             <label for="password_confirmation" class="sr-only">Confirme a senha</label>
             <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirme a senha" required>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Criar</button>

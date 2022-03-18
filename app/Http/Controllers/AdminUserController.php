@@ -7,7 +7,6 @@ use App\Models\Classroom;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -41,13 +40,13 @@ class AdminUserController extends Controller
                 'classroom_id' => $attributes['classroom_id']
             ]);
             if ($created) {
-                $link = URL::temporarySignedRoute('password_create', now()->addMinutes(5), $created->id);
+                $link = URL::temporarySignedRoute('password_create', now()->addDays(2), $created->id);
                 Mail::to($created->email)->send(new SendPassword($created, $link));
             }
-            toast("Usuário criado! Um email contendo a senha e o link para login foi enviado para esse usuário", 'success')->hideCloseButton();
+            toast("Usuário criado! Foi enviado um e-mail contendo um link para criação de senha desse usuário", 'success')->hideCloseButton();
             return redirect()->route('admin.users.index');
         } catch (\Exception $e) {
-            alert('Algo deu errado', "Erro ao criar novo usuário ". $e->getMessage(), 'error');
+            alert('Algo deu errado', "Erro ao criar novo usuário", 'error');
             return redirect()->back();
         }
     }

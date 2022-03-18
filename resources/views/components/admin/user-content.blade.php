@@ -20,8 +20,9 @@
                     <tr>
                         <th>Nome</th>
                         <th>Classe</th>
-                        <th>Role</th>
+                        <th>Função</th>
                         <th>Ações</th>
+                        <th>Senha</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,7 +44,7 @@
                             <td class="align-middle">
                                 <div class="d-inline-flex align-items-center">
                                     <a href="/admin/users/{{ $user->id }}/edit"><i class="fas fa-edit text-secondary"></i></a>
-                                    <form action="/admin/users/{{ $user->id }}" class="ml-3 deleteclass"  method="POST">
+                                    <form action="/admin/users/{{ $user->id }}" class="ml-3 deleteclass" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-link classname" data-isclass="0" data-name="{{ $user->name }}">
@@ -51,6 +52,15 @@
                                         </button>
                                     </form>
                                 </div>
+                            </td>
+                            <td class="align-middle">
+                                <form action="/password/resend/{{ $user->id }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                            class="btn btn-sm btn-block col-md-5 {{ $user->password ? 'btn-outline-success' : 'btn-outline-secondary' }} ">{{ $user->password ? 'Resetar' : 'Criar' }}
+                                        <i class="fas fa-envelope ml-2"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

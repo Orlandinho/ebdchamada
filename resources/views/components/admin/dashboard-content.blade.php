@@ -20,7 +20,7 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>53</h3>
+                            <h3>{{ $students->where('active', true)->count() }}</h3>
 
                             <p>Alunos Ativos</p>
                         </div>
@@ -35,7 +35,7 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>6</h3>
+                            <h3>{{ $students->where('active', false)->count() }}</h3>
 
                             <p>Alunos Inativos</p>
                         </div>
@@ -50,7 +50,7 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>8</h3>
+                            <h3>{{ $students->where('visitor', true)->count() }}</h3>
 
                             <p>Visitantes</p>
                         </div>
@@ -65,7 +65,7 @@
                     <!-- small box -->
                     <div class="small-box bg-navy">
                         <div class="inner">
-                            <h3>14</h3>
+                            <h3>{{ $users->count() }}</h3>
 
                             <p>Oficiais</p>
                         </div>
