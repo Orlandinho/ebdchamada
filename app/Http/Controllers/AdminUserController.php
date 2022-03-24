@@ -8,7 +8,9 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class AdminUserController extends Controller
@@ -17,6 +19,13 @@ class AdminUserController extends Controller
     {
         return view('admin.user_index', [
             'users' => User::all()->sortBy('name')
+        ]);
+    }
+
+    public function show(User $user)
+    {
+        return view('admin.user_show', [
+            'user' => $user
         ]);
     }
 
@@ -35,6 +44,7 @@ class AdminUserController extends Controller
             $created = User::create([
                 'name' => $attributes['name'],
                 'email' => $attributes['email'],
+                'slug' => $attributes['slug'],
                 'avatar' => $attributes['avatar'],
                 'role_id' => $attributes['role_id'],
                 'classroom_id' => $attributes['classroom_id']
@@ -51,6 +61,40 @@ class AdminUserController extends Controller
         }
     }
 
+    public function edit(User $user)
+    {
+        return view('admin.user_edit', [
+            'user' => $user,
+            'roles' => Role::all(),
+            'classrooms' => Classroom::all('id','class')
+        ]);
+    }
+
+    public function update(User $user, Request $request)
+    {
+        $attributes = $this->validateUser($request, $user);
+        //TODO fix
+        //check for image profile, delete before saves it to storage if it exists
+        $user->update([$attributes]);
+    }
+
+    public function destroy(User $user)
+    {
+        dd($user);
+        if ($user->avatar ==! null) {
+            Storage::delete($user->avatar);
+        }
+        $userName = $user->name;
+        try {
+            $user->delete();
+            toast("Dados do colaborador(a) {$userName} excluídos!", 'success')->hideCloseButton();
+            return redirect()->route('admin.users.index');
+        } catch (\Exception $e) {
+            alert('Algo deu errado', "Erro ao tentar excluir os dados do colaborador {$userName}", 'error');
+            return redirect()->back();
+        }
+    }
+
     private function validateUser(Request $request, $user = null)
     {
         $attributes = $request->validate([
@@ -61,7 +105,23 @@ class AdminUserController extends Controller
             'classroom_id' => ['nullable', Rule::exists('classrooms','id')],
         ]);
 
-        $attributes['avatar'] = $request->file('avatar')?->store('avatars');
+        //TODO implements
+        //add method to set the avatar
+
+        if ($user->avatar ==! null && Storage::exists($user->avatar)) {
+            if (isset($request->avatar)) {
+                Storage::delete($user->avatar);
+                $attributes['avatar'] = $request->file('avatar')->store('avatars');
+            } else {
+                $attributes['avatar'] = $user->avatar;
+            }
+        } else {
+            $attributes['avatar'] = $request->file('avatar')?->store('avatars');
+        }
+
+        if($user === null) {
+            $attributes['slug'] = Str::slug(explode(' ', $request->name)[0] . now()->isoFormat('Hmms'));
+        }
 
         return $attributes;
     }

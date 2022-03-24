@@ -118,7 +118,18 @@
                 e.preventDefault()
                 let className = classData.querySelector('.classname').getAttribute('data-name')
                 let isClass = classData.querySelector('.classname').getAttribute('data-isclass')
-                let message = (isClass == 1 ? `Ao deletar a classe <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?` : `Ao deletar os dados do(a) aluno(a) <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`)
+                let message = ''
+                switch (isClass) {
+                    case "0":
+                        message = `Ao deletar os dados do(a) aluno(a) <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`
+                        break;
+                    case "1":
+                        message = `Ao deletar a classe <b>${className}</b> você não terá como reverter a ação. Deseja prosseguir?`
+                        break;
+                    case "2":
+                        message = `Ao deletar os dados do colaborador(a) <b>${className}</b> você não terá como reverter a ação e ele(a) não terá mais acesso ao sistema. Deseja prosseguir?`
+                        break;
+                }
 
                 Swal.fire({
                     title: 'Atenção!',

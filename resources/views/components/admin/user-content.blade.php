@@ -29,7 +29,7 @@
                     @foreach($users as $user)
                         <tr>
                             <td>
-                                <a href="/admin/users/{{ $user->id }}" class="d-inline-flex align-items-center text-dark">
+                                <a href="/admin/users/{{ $user->slug }}" class="d-inline-flex align-items-center text-dark">
                                     <div class="image mr-3">
                                         <img src="{{ $user->avatar !== null ? asset('storage/'.$user->avatar) : asset('storage/avatars/avatar.png') }}"
                                              class="img-circle elevation-2" style="width: 40px;" alt="User Image">
@@ -43,11 +43,11 @@
                             <td class="align-middle">{{ \App\Models\Role::find($user->role_id)->name }}</td>
                             <td class="align-middle">
                                 <div class="d-inline-flex align-items-center">
-                                    <a href="/admin/users/{{ $user->id }}/edit"><i class="fas fa-edit text-secondary"></i></a>
+                                    <a href="/admin/users/{{ $user->slug }}/edit"><i class="fas fa-edit text-secondary"></i></a>
                                     <form action="/admin/users/{{ $user->id }}" class="ml-3 deleteclass" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link classname" data-isclass="0" data-name="{{ $user->name }}">
+                                        <button type="submit" class="btn btn-link classname" data-isclass="2" data-name="{{ $user->name }}">
                                             <i class="fas fa-trash-alt text-danger"></i>
                                         </button>
                                     </form>

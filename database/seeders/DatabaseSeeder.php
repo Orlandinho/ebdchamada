@@ -52,9 +52,8 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => 1,
             'role_id' => 3,
             'name' => 'Orlando',
+            'slug' => 'orlando'.now()->isoFormat('DMMY'),
             'email' => 'horllando@hotmail.com',
-            'email_verified_at' => now(),
-            'password' => 'password',
             'remember_token' => Str::random(10),
         ]);
 
@@ -62,9 +61,8 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => 2,
             'role_id' => 1,
             'name' => 'Silvio',
+            'slug' => 'silvio'.now()->isoFormat('DMMY'),
             'email' => 'silvio@gmail.com',
-            'email_verified_at' => now(),
-            'password' => 'password',
             'remember_token' => Str::random(10),
         ]);
 
@@ -72,9 +70,8 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => 2,
             'role_id' => 1,
             'name' => 'Luciana',
+            'slug' => 'luciana'.now()->isoFormat('DMMY'),
             'email' => 'luciana@example.com',
-            'email_verified_at' => now(),
-            'password' => 'password',
             'remember_token' => Str::random(10),
         ]);
 
@@ -82,9 +79,8 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => null,
             'role_id' => 1,
             'name' => 'Aline',
+            'slug' => 'aline'.now()->isoFormat('DMMY'),
             'email' => 'aline@example.com',
-            'email_verified_at' => now(),
-            'password' => 'password',
             'remember_token' => Str::random(10),
         ]);
 
@@ -92,9 +88,8 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => null,
             'role_id' => 1,
             'name' => 'Irene',
+            'slug' => 'irene'.now()->isoFormat('DMMY'),
             'email' => 'irene@example.com',
-            'email_verified_at' => now(),
-            'password' => 'password',
             'remember_token' => Str::random(10),
         ]);
 
@@ -102,9 +97,8 @@ class DatabaseSeeder extends Seeder
             'classroom_id' => null,
             'role_id' => 2,
             'name' => 'Fernanda',
+            'slug' => 'fernanda'.now()->isoFormat('DMMY'),
             'email' => 'fernanda@example.com',
-            'email_verified_at' => now(),
-            'password' => 'password',
             'remember_token' => Str::random(10),
         ]);
 
@@ -138,5 +132,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'aline',
         ]);
 
+        Student::factory()->create([
+            'classroom_id' => 1,
+            'name' => 'Fernanda',
+            'slug' => 'fernanda',
+        ]);
     }
 }

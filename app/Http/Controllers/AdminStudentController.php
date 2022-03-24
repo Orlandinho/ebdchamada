@@ -128,7 +128,6 @@ class AdminStudentController extends Controller
 
     public function destroy(Student $student)
     {
-        dd('teste');
         if ($student->avatar ==! null) {
             Storage::delete($student->avatar);
         }

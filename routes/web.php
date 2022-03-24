@@ -38,8 +38,8 @@ Route::prefix('admin')
         Route::get('/users', [AdminUserController::class, 'index'])->name('index');
         Route::get('/users/create', [AdminUserController::class, 'create'])->name('create');
         Route::post('/users', [AdminUserController::class, 'store']);
-        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('{user}');
-        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('edit');
+        Route::get('/users/{user:slug}', [AdminUserController::class, 'show'])->name('{user:slug}');
+        Route::get('/users/{user:slug}/edit', [AdminUserController::class, 'edit'])->name('edit');
         Route::patch('/users/{user}', [AdminUserController::class, 'update']);
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
     });
