@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendPasswordEmail;
 use App\Mail\SendPassword;
 use App\Models\Classroom;
 use App\Models\Role;
@@ -51,7 +52,7 @@ class AdminUserController extends Controller
             ]);
             if ($created) {
                 $link = URL::temporarySignedRoute('password_create', now()->addDays(2), $created->id);
-                Mail::to($created->email)->send(new SendPassword($created, $link));
+                SendPasswordEmail::dispatch($created, $link)->delay(10);
             }
             toast("Usuário criado! Foi enviado um e-mail contendo um link para criação de senha desse usuário", 'success')->hideCloseButton();
             return redirect()->route('admin.users.index');
@@ -73,14 +74,18 @@ class AdminUserController extends Controller
     public function update(User $user, Request $request)
     {
         $attributes = $this->validateUser($request, $user);
-        //TODO fix
-        //check for image profile, delete before saves it to storage if it exists
-        $user->update([$attributes]);
+        try {
+            $user->update([$attributes]);
+            toast("Dados do colaborador(a) atualizados!", 'success')->hideCloseButton();
+            return redirect()->route('admin.users.index');
+        } catch (\Exception $e) {
+            alert('Algo deu errado', "Erro ao criar novo usuário", 'error');
+            return redirect()->back();
+        }
     }
 
     public function destroy(User $user)
     {
-        dd($user);
         if ($user->avatar ==! null) {
             Storage::delete($user->avatar);
         }
@@ -99,16 +104,16 @@ class AdminUserController extends Controller
     {
         $attributes = $request->validate([
             'name' => ['required','min:2','max:60'],
-            'email' => ['required','email','max:60','unique:users'],
+            'email' => ['required','email','max:60',Rule::unique('users')->ignore($user)],
             'avatar' => ['nullable','image','mimes:jpeg,jpg,png','max:2048'],
             'role_id' => ['required', Rule::exists('roles','id')],
             'classroom_id' => ['nullable', Rule::exists('classrooms','id')],
         ]);
 
         //TODO implements
-        //add method to set the avatar
+        //add class to handle the avatar
 
-        if ($user->avatar ==! null && Storage::exists($user->avatar)) {
+        if ($user ==! null && Storage::exists($user->avatar)) {
             if (isset($request->avatar)) {
                 Storage::delete($user->avatar);
                 $attributes['avatar'] = $request->file('avatar')->store('avatars');

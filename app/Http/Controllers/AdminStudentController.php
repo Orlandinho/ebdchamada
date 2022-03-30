@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Classroom;
 use App\Models\Information;
 use App\Models\Student;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -142,7 +141,7 @@ class AdminStudentController extends Controller
         }
     }
 
-    private function validateRequest(Request $request, $student = null)
+    private function validateRequest(Request $request, $student = null): array
     {
         $attributes = $request->validate([
             'name' => ['required','min:2','max:60'],
@@ -161,7 +160,7 @@ class AdminStudentController extends Controller
         $attributes['active'] = $request->active ?? 0;
         $attributes['visitor'] = $request->visitor ?? 0;
 
-        if ($student->avatar ==! null && Storage::exists($student->avatar)) {
+        if ($student ==! null && Storage::exists($student->avatar)) {
             if (isset($request->avatar)) {
                 Storage::delete($student->avatar);
                 $attributes['avatar'] = $request->file('avatar')->store('avatars');
