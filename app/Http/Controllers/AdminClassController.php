@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreClassRequest;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\User;
@@ -12,11 +13,6 @@ use Illuminate\Validation\Rule;
 
 class AdminClassController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     *
-     */
     public function index()
     {
         return view('admin.classroom_index', [
@@ -24,11 +20,6 @@ class AdminClassController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     *
-     */
     public function create()
     {
         $teachers = User::whereNull('classroom_id')->get();
@@ -39,15 +30,10 @@ class AdminClassController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     */
-    public function store(Request $request)
+    public function store(StoreClassRequest $request)
     {
-        $attributes = $this->validateClass($request);
+        $attributes = $request->validated();
+
         try {
             $check = DB::transaction(function() use ($request, $attributes) {
                 $currentClass = Classroom::create($attributes);
@@ -70,12 +56,6 @@ class AdminClassController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     */
     public function show(Classroom $classroom)
     {
         return view('admin.classroom_show',[
@@ -83,12 +63,6 @@ class AdminClassController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     */
     public function edit(Classroom $classroom)
     {
         $teachers = User::where('classroom_id', $classroom->id)->orWhereNull('classroom_id')->get();
@@ -100,16 +74,10 @@ class AdminClassController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     *
-     */
-    public function update(Request $request, Classroom $classroom)
+    public function update(StoreClassRequest $request, Classroom $classroom)
     {
-        $attributes = $this->validateClass($request);
+        $attributes = $request->validated();
+
         try {
             $check = DB::transaction(function() use ($request, $attributes, $classroom) {
                 $classroom->update($attributes);
@@ -134,12 +102,6 @@ class AdminClassController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  App\Models\Classroom $classroom
-     *
-     */
     public function destroy(Classroom $classroom)
     {
         $name = $classroom->class;
@@ -157,30 +119,11 @@ class AdminClassController extends Controller
                 toast("Classe {$name} excluída da base de dados!",'success')->hideCloseButton();
                 return redirect()->route('admin.classrooms.index');
             } else {
-                throw new \Exception;
+                throw new \Exception('Houve algum problema com a conexão ao banco de dados');
             }
         } catch(\Exception $e) {
             alert("Algo deu errado!",'Erro ao tentar excluir a classe! '. $e->getMessage(), 'error');
             return redirect()->back();
         }
-    }
-
-    /**
-     * Validate data from request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     */
-
-    private function validateClass(Request $request)
-    {
-        $attributes = $request->validate([
-            'class' => 'required', Rule::unique('classrooms','class')->ignore($request->id),
-            'description' => 'required'
-        ]);
-
-        $attributes['slug'] = Str::slug($request->class, '-');
-
-        return $attributes;
     }
 }

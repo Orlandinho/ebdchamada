@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreStudentRequest;
 use App\Models\Classroom;
 use App\Models\Information;
 use App\Models\Student;
+use App\Traits\ImageUploadTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use mysql_xdevapi\Exception;
 
 class AdminStudentController extends Controller
 {
+    use imageUploadTrait;
+
     public function index()
     {
         return view('admin.student_index',[
@@ -29,9 +32,11 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
-        $attributes = $this->validateRequest($request);
+        $attributes = $request->validated();
+        $attributes['avatar'] = $this->avatarUpload($request);
+
         try {
             $check = DB::transaction(function() use ($request, $attributes) {
 
@@ -87,6 +92,8 @@ class AdminStudentController extends Controller
 
     public function update(Request $request, Student $student)
     {
+        //TODO refactor
+        //use Request Form and Trait
         $attributes = $this->validateRequest($request, $student);
         try {
             $check = DB::transaction(function() use ($request, $attributes, $student) {
@@ -139,41 +146,5 @@ class AdminStudentController extends Controller
             alert('Algo deu errado', "Erro ao tentar excluir os dados do aluno {$studentName}", 'error');
             return redirect()->back();
         }
-    }
-
-    private function validateRequest(Request $request, $student = null): array
-    {
-        $attributes = $request->validate([
-            'name' => ['required','min:2','max:60'],
-            'dob' => ['required','date_format:d/m/Y','before_or_equal:date'],
-            'classroom_id' => ['required', Rule::exists('classrooms','id')],
-            'zipcode' => ['nullable','regex:/^(\d){5}-(\d){3}$/'],
-            'address' => ['nullable','min:5', 'max:60'],
-            'neighborhood' => ['nullable','min:2','max:30'],
-            'city' => ['nullable','min:3','max:30'],
-            'cel' => ['nullable','regex:/^\((\d){2}\) 9(\d){4}-(\d){4}$/'],
-            'tel' => ['nullable','regex:/^\((\d){2}\) (\d){4}-(\d){4}$/'],
-            'email' => ['nullable','email','max:50'],
-            'avatar' => ['nullable','image','mimes:jpeg,jpg,png','max:2048']
-        ]);
-
-        $attributes['active'] = $request->active ?? 0;
-        $attributes['visitor'] = $request->visitor ?? 0;
-
-        if ($student ==! null && Storage::exists($student->avatar)) {
-            if (isset($request->avatar)) {
-                Storage::delete($student->avatar);
-                $attributes['avatar'] = $request->file('avatar')->store('avatars');
-            } else {
-                $attributes['avatar'] = $student->avatar;
-            }
-        } else {
-            $attributes['avatar'] = $request->file('avatar')?->store('avatars');
-        }
-
-        $attributes['dob'] = Carbon::createFromFormat('d/m/Y', $request->dob)->format('Y-m-d');
-        $attributes['slug'] = Str::slug(explode(' ', $request->name)[0] . '-' . $attributes['dob']);
-
-        return $attributes;
     }
 }
