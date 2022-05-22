@@ -11,13 +11,16 @@
                 <a href="/admin/classrooms/{{ $classroom->slug }}/edit" class="mr-2">
                     <i class="text-gray-dark fas fa-edit"></i>
                 </a>
-                <form action="/admin/classrooms/{{ $classroom->slug }}" class="deleteclass" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-link classname" data-isclass="1" data-name="{{ $classroom->class }}">
-                        <i class="text-danger fas fa-trash-alt"></i>
-                    </button>
-                </form>
+                @can('delete')
+                    <form action="/admin/classrooms/{{ $classroom->slug }}" class="deleteclass" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-link classname" data-isclass="1"
+                                data-name="{{ $classroom->class }}">
+                            <i class="text-danger fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                @endcan
             </div>
         </div>
     </div>

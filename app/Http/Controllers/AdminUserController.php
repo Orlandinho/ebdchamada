@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Jobs\SendPasswordEmail;
-use App\Mail\SendPassword;
 use App\Models\Classroom;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class AdminUserController extends Controller
 {
+    use ImageUploadTrait;
+
     public function index()
     {
         return view('admin.user_index', [
@@ -38,18 +37,13 @@ class AdminUserController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $attributes = $this->validateUser($request);
+        $attributes = $request->validated();
+        $attributes['avatar'] = $this->avatarUpload($request);
+
         try {
-            $created = User::create([
-                'name' => $attributes['name'],
-                'email' => $attributes['email'],
-                'slug' => $attributes['slug'],
-                'avatar' => $attributes['avatar'],
-                'role_id' => $attributes['role_id'],
-                'classroom_id' => $attributes['classroom_id']
-            ]);
+            $created = User::create($attributes);
             if ($created) {
                 $link = URL::temporarySignedRoute('password_create', now()->addDays(2), $created->id);
                 SendPasswordEmail::dispatch($created, $link)->delay(10);
@@ -57,7 +51,7 @@ class AdminUserController extends Controller
             toast("Usuário criado! Foi enviado um e-mail contendo um link para criação de senha desse usuário", 'success')->hideCloseButton();
             return redirect()->route('admin.users.index');
         } catch (\Exception $e) {
-            alert('Algo deu errado', "Erro ao criar novo usuário", 'error');
+            alert('Algo deu errado', "Erro ao criar novo usuário: " . $e->getMessage(), 'error');
             return redirect()->back();
         }
     }
@@ -71,11 +65,13 @@ class AdminUserController extends Controller
         ]);
     }
 
-    public function update(User $user, Request $request)
+    public function update(User $user, StoreUserRequest $request)
     {
-        $attributes = $this->validateUser($request, $user);
+        $attributes = $request->except(['slug']);
+        $attributes['avatar'] = $this->avatarUpload($request, $user);
+
         try {
-            $user->update([$attributes]);
+            $user->update($attributes);
             toast("Dados do colaborador(a) atualizados!", 'success')->hideCloseButton();
             return redirect()->route('admin.users.index');
         } catch (\Exception $e) {
@@ -86,6 +82,8 @@ class AdminUserController extends Controller
 
     public function destroy(User $user)
     {
+        $this->authorize('delete');
+
         if ($user->avatar ==! null) {
             Storage::delete($user->avatar);
         }
@@ -98,36 +96,5 @@ class AdminUserController extends Controller
             alert('Algo deu errado', "Erro ao tentar excluir os dados do colaborador {$userName}", 'error');
             return redirect()->back();
         }
-    }
-
-    private function validateUser(Request $request, $user = null)
-    {
-        $attributes = $request->validate([
-            'name' => ['required','min:2','max:60'],
-            'email' => ['required','email','max:60',Rule::unique('users')->ignore($user)],
-            'avatar' => ['nullable','image','mimes:jpeg,jpg,png','max:2048'],
-            'role_id' => ['required', Rule::exists('roles','id')],
-            'classroom_id' => ['nullable', Rule::exists('classrooms','id')],
-        ]);
-
-        //TODO implements
-        //add class to handle the avatar
-
-        if ($user ==! null && Storage::exists($user->avatar)) {
-            if (isset($request->avatar)) {
-                Storage::delete($user->avatar);
-                $attributes['avatar'] = $request->file('avatar')->store('avatars');
-            } else {
-                $attributes['avatar'] = $user->avatar;
-            }
-        } else {
-            $attributes['avatar'] = $request->file('avatar')?->store('avatars');
-        }
-
-        if($user === null) {
-            $attributes['slug'] = Str::slug(explode(' ', $request->name)[0] . now()->isoFormat('Hmms'));
-        }
-
-        return $attributes;
     }
 }

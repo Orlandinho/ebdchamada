@@ -9,6 +9,7 @@ use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
+    ->middleware(['auth'])
     ->name('admin.classrooms.')
     ->group(function() {
     Route::get('/classrooms', [AdminClassController::class, 'index'])->name('index');
@@ -21,6 +22,7 @@ Route::prefix('admin')
 });
 
 Route::prefix('admin')
+    ->middleware(['auth'])
     ->name('admin.students.')
     ->group(function() {
         Route::get('/students', [AdminStudentController::class, 'index'])->name('index');
@@ -33,6 +35,7 @@ Route::prefix('admin')
     });
 
 Route::prefix('admin')
+    ->middleware(['auth'])
     ->name('admin.users.')
     ->group(function() {
         Route::get('/users', [AdminUserController::class, 'index'])->name('index');
@@ -48,12 +51,14 @@ Route::get('/password/{user}/edit', [PasswordController::class, 'edit'])->name('
 Route::post('/password/resend/{user}', [PasswordController::class, 'resend']);
 Route::patch('/password/{user}', [PasswordController::class, 'update']);
 
-Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
+Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('admin-dashboard');
 
 Route::get('classes/{classroom:slug}', [ClassroomController::class, 'show']);
 
 Route::get('/', function(){
-    return view('welcome');
+    return redirect()->route('admin-dashboard');
 });
 
 Route::get('/dashboard', function () {

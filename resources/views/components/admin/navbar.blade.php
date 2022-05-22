@@ -16,5 +16,11 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin/users" class="nav-link">Oficiais</a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="nav-link btn btn-link">Sair</button>
+            </form>
+        </li>
     </ul>
 </nav>

@@ -13,4 +13,8 @@ class Role extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public const IS_PROFESSOR = 1;
+    public const IS_ASSISTENTE = 2;
+    public const IS_ADMIN = 3;
 }

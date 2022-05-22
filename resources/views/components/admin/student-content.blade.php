@@ -73,13 +73,17 @@
                             <td class="align-middle">
                                 <div class="d-inline-flex align-items-center">
                                     <a href="/admin/students/{{ $student->slug }}/edit"><i class="fas fa-edit text-secondary"></i></a>
-                                    <form action="/admin/students/{{ $student->slug }}" class="ml-3 deleteclass"  method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-link classname" data-isclass="0" data-name="{{ $student->name }}">
-                                            <i class="fas fa-trash-alt text-danger"></i>
-                                        </button>
-                                    </form>
+                                    @can('delete')
+                                        <form action="/admin/students/{{ $student->slug }}" class="ml-3 deleteclass"
+                                              method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link classname" data-isclass="0"
+                                                    data-name="{{ $student->name }}">
+                                                <i class="fas fa-trash-alt text-danger"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

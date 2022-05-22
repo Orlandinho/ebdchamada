@@ -76,7 +76,7 @@
         <form class="form-signin" method="POST" action="/password/{{ $user->id }}">
             @csrf
             @method('PATCH')
-            <img class="mb-4" src="{{ asset('dist/img/logos/ipvg.png') }}" alt="" width="100%" height="100%">
+            <img class="mb-4" src="{{ asset('storage/logos/ipvg.png') }}" alt="Igreja Presbiteriana de Vila Gustavo" width="100%" height="100%">
             <h1 class="h3 mb-3 font-weight-normal">Crie sua senha</h1>
             <label for="password" class="sr-only">Senha</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required autofocus>

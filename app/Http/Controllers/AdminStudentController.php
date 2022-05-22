@@ -7,12 +7,8 @@ use App\Models\Classroom;
 use App\Models\Information;
 use App\Models\Student;
 use App\Traits\ImageUploadTrait;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class AdminStudentController extends Controller
 {
@@ -90,11 +86,11 @@ class AdminStudentController extends Controller
         ]);
     }
 
-    public function update(Request $request, Student $student)
+    public function update(StoreStudentRequest $request, Student $student)
     {
-        //TODO refactor
-        //use Request Form and Trait
-        $attributes = $this->validateRequest($request, $student);
+        $attributes = $request->validated();
+        $attributes['avatar'] = $this->avatarUpload($request, $student);
+
         try {
             $check = DB::transaction(function() use ($request, $attributes, $student) {
                 $student->update([
@@ -124,7 +120,7 @@ class AdminStudentController extends Controller
                 throw new \Exception('Não foi possível realizar a atualização dos dados');
             }
         } catch (\Exception $e) {
-            if (!is_null($attributes['avatar']) && Storage::exists($attributes['avatar'])) {
+            if (Storage::exists($attributes['avatar'])) {
                 Storage::delete($attributes['avatar']);
             }
             alert("Algo deu errado!","Erro ao tentar atualizar os dados do aluno {$request->name}! ". $e->getMessage(), 'error');
@@ -134,6 +130,8 @@ class AdminStudentController extends Controller
 
     public function destroy(Student $student)
     {
+        $this->authorize('delete');
+
         if ($student->avatar ==! null) {
             Storage::delete($student->avatar);
         }

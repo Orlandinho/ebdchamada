@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 trait ImageUploadTrait
 {
-    public function avatarUpload(Request $request, $model = null): string
+    public function avatarUpload(Request $request, $model = null): ?string
     {
         if ($model ==! null && Storage::exists($model->avatar)) {
             if (isset($request->avatar)) {

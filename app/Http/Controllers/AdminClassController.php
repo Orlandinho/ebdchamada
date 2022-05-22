@@ -6,10 +6,7 @@ use App\Http\Requests\StoreClassRequest;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class AdminClassController extends Controller
 {
@@ -104,6 +101,8 @@ class AdminClassController extends Controller
 
     public function destroy(Classroom $classroom)
     {
+        $this->authorize('delete');
+
         $name = $classroom->class;
         try {
             $check = DB::transaction(function() use ($classroom) {
