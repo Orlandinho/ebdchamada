@@ -29,5 +29,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('delete', function (User $user) {
            return $user->role_id === Role::IS_ADMIN;
         });
+
+        Gate::define('access', function (User $user) {
+            return in_array($user->role_id, [Role::IS_ASSISTENTE, Role::IS_ADMIN]);
+        });
     }
 }

@@ -16,11 +16,29 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin/users" class="nav-link">Oficiais</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="nav-link btn btn-link">Sair</button>
-            </form>
+    </ul>
+
+    <a href="#" class="brand-link">
+
+    </a>
+    <ul class="navbar-nav ml-auto">
+        <img src="{{ auth()->user()->avatar ? asset('storage/'.auth()->user()->avatar) : asset('storage/avatars/avatar.png') }}" alt="User Image" class="brand-image img-circle elevation-3" height="40" width="40"
+             style="opacity: .8">
+        <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ auth()->user()->name }}</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                <li><a href="#" class="dropdown-item">Minhas informações </a></li>
+
+                <li class="dropdown-divider"></li>
+
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </button>
+                </form>
+            </ul>
         </li>
     </ul>
 </nav>

@@ -391,7 +391,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.divide-y > *, .border, .border-b, .border-t, .border-l-4, .border-r, .border-b-2, .md\:border-t-0, .md\:border-l {
+.divide-y > *, .border, .border-0, .border-b, .border-t, .border-l-4, .border-r, .border-b-2, .md\:border-t-0, .md\:border-l {
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
@@ -754,6 +754,9 @@ select {
 .mt-6 {
   margin-top: 1.5rem;
 }
+.mt-5 {
+  margin-top: 1.25rem;
+}
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -765,9 +768,6 @@ select {
 }
 .mt-1 {
   margin-top: 0.25rem;
-}
-.mt-5 {
-  margin-top: 1.25rem;
 }
 .mb-8 {
   margin-bottom: 2rem;
@@ -922,6 +922,9 @@ select {
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
+.flex-row {
+  flex-direction: row;
+}
 .flex-col {
   flex-direction: column;
 }
@@ -1010,6 +1013,9 @@ select {
 }
 .border {
   border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
 }
 .border-b {
   border-bottom-width: 1px;

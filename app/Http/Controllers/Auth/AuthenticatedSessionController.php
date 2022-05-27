@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Role;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +34,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::ADMIN);
+        if(in_array(\auth()->user()->role_id, [Role::IS_ADMIN, Role::IS_ASSISTENTE])){
+            return redirect()->intended(RouteServiceProvider::ADMIN);
+        } else {
+            return redirect()->intended(RouteServiceProvider::PROF)->with();
+        }
+
     }
 
     /**
